@@ -1,0 +1,66 @@
+---
+- name: check instance_flavor is defined
+  assert:
+    that:
+    - instance_flavor is defined
+    fail_msg: instance_flavor ist not defined
+
+- name: create {{ instance_name }} disk
+  gcp_compute_disk:
+      name: "{{ instance_name }}-disk"
+      size_gb: 20
+      source_image: 'projects/centos-cloud/global/images/family/centos-7'
+      state: present
+      zone: "{{ zone }}"
+  register: disk
+
+- name: create {{ instance_name }} network
+  gcp_compute_network:
+      name: "{{ instance_name }}-network"
+      state: present
+  register: network
+
+- name: create {{ instance_name }} address
+  gcp_compute_address:
+      name: "{{ instance_name }}-address"
+      state: present
+      region: "{{ region }}"
+  register: address
+
+- name: allow SSH, HTTP and HTTPS traffic
+  gcp_compute_firewall:
+      name: "{{ instance_name }}-firewall"
+      state: present
+      allowed:
+      - ip_protocol: tcp
+        ports:
+        - '22'
+        - '80'
+        - '443'
+      network: "{{ network }}"
+
+- name: create {{ instance_name }} instance
+  gcp_compute_instance:
+      state: present
+      name: "{{ instance_name }}"
+      machine_type: "{{ instance_flavor }}"
+      disks:
+        - auto_delete: true
+          boot: true
+          source: "{{ disk }}"
+      network_interfaces:
+          - network: "{{ network }}"
+            access_configs:
+              - name: 'External NAT'
+                nat_ip: "{{ address }}"
+                type: 'ONE_TO_ONE_NAT'
+      zone: "{{ zone }}"
+  register: instance
+
+- name: wait for instance to start
+  wait_for:
+    host: "{{ address.address }}"
+    port: 22
+    delay: 10
+    timeout: 60
+  when: instance.changed

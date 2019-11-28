@@ -8,11 +8,11 @@ Call the role from your playbook like this:
 
 	- name: deploy instance
 	  var:
-		type: gcp
-		instance_name: demo
-		instnace_flavor: n1-standard-1
+	    type: gcp
+	    instance_name: demo
+	    instnace_flavor: n1-standard-1
 	  include_role:
-		name: instance
+	    name: instance
 
 To remove or delete a VM or instance, use the same role, but with the "remove" variables set to true.
 

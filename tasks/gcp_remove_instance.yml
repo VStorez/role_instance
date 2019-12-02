@@ -3,13 +3,13 @@
   gcp_compute_instance:
       state: absent
       name: "{{ instance_name }}"
-      zone: "{{ gce_zone }}"
+      zone: "{{ gcp_zone }}"
 
 - name: remove {{ instance_name }} disk
   gcp_compute_disk:
       name: "{{ instance_name }}-disk"
       state: absent
-      zone: "{{ gce_zone }}"
+      zone: "{{ gcp_zone }}"
 
 - name: remove {{ instance_name }} firewall for SSH, HTTP and HTTPS traffic
   gcp_compute_firewall:
@@ -20,7 +20,7 @@
   gcp_compute_address:
       name: "{{ instance_name }}-address"
       state: absent
-      region: "{{ gce_region }}"
+      region: "{{ gcp_region }}"
 
 - name: remove {{ instance_name }} network
   gcp_compute_network:

@@ -11,7 +11,7 @@
       size_gb: 20
       source_image: 'projects/centos-cloud/global/images/family/centos-7'
       state: present
-      zone: "{{ zone }}"
+      zone: "{{ gce_zone }}"
   register: disk
 
 - name: create {{ instance_name }} network
@@ -24,7 +24,7 @@
   gcp_compute_address:
       name: "{{ instance_name }}-address"
       state: present
-      region: "{{ region }}"
+      region: "{{ gce_region }}"
   register: address
 
 - name: allow SSH, HTTP and HTTPS traffic
@@ -54,7 +54,7 @@
               - name: 'External NAT'
                 nat_ip: "{{ address }}"
                 type: 'ONE_TO_ONE_NAT'
-      zone: "{{ zone }}"
+      zone: "{{ gce_zone }}"
   register: instance
 
 - name: wait for instance to start

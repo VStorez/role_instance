@@ -1,4 +1,10 @@
 ---
+- debug: msg="{{ lookup('env','AWS_ACCESS_KEY_ID') }} is an environment variable"
+  register: key
+
+- debug:
+    var: key
+
 - name: create security group
   ec2_group:
     name: "{{ instance_name }}"

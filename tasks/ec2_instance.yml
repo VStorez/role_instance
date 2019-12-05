@@ -3,6 +3,10 @@
   ec2_group:
     name: "{{ instance_name }}"
     description: HTTP, HTTPS and SSH
+    # without the two following lines I received the error:
+    # Error in describe_security_groups: Unable to locate credentials
+    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+    aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
     state: present
     rules:
     - proto: tcp
@@ -22,3 +26,5 @@
     name: "{{ instance_name }}"
     key_name: "{{ ec2_keypair }}"
     region: "{{ ec2_region }}"
+    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+    aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"

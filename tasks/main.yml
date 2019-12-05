@@ -12,6 +12,12 @@
     - instance_name is defined
     fail_msg: "instance_name and instance_flavor have to be set"
 
+- name: check instance_flavor is defined
+  assert:
+    that:
+    - instance_flavor is defined
+    fail_msg: "instance_flavor ist not defined"
+
 - name: create instance on gcp
   import_tasks: gcp_instance.yml
   when:

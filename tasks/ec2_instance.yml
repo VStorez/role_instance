@@ -1,0 +1,24 @@
+---
+- name: create security group
+  ec2_group:
+    name: "{{ isnstance_name }}"
+    description: HTTP, HTTPS and SSH
+    state: present
+    rules:
+    - proto: tcp
+      ports:
+      - 80
+      - 443
+      - 22
+      cidr_ip: 0.0.0.0/0
+      rule_desc: allow all on port 80
+    region: eu-central-1
+
+- name: create EC2 instance
+  ec2_instance:
+    image_id: "{{ ec2_ami }}"
+    instance_type: "{{ instance_flavor }}"
+    security_group: "{{ instance_name }}"
+    name: "{{ instance_name }}"
+    key_name: "{{ ec2_keypair }}"
+    region: "{{ ec2_region }}"

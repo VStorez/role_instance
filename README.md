@@ -1,4 +1,4 @@
-# Role: Instance
+# Ansible Role: Instance
 
 This role will help to create and remove instances on several different providers. It can also be used to demonstrate multi cloud use cases.
 
@@ -28,7 +28,7 @@ To remove or delete a VM or instance, use the same role, but with the "remove" v
 
  | Variable Name | Description | Mandatory |
  |--|--|--|
- | type | Provider Type, currently GCP, EC2 or VMW | yes |
+ | type | Provider Type, gcp, ec2 or vmw | yes |
  | instance_name | Name of the VM or Instance | yes |
  | instance_flavor | e.g. n1-standard-1 for a small VM on GCP | yes |
 

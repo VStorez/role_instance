@@ -1,0 +1,23 @@
+---
+# all variables prefixed with "vault_" should not be declared here, but in a vault.yml file
+#
+
+# the name of the instance or virtual machine to create
+instance_name: example
+
+# the flavor of this instance
+# for GCP use n1-standard-2
+# for EC2 use t3.large
+instance_flavor: t3.large
+
+# in which platform to create the instance or vm
+# currently either gcp or ec2
+type: ec2
+
+# keypair which will be injected into the VM
+ec2_keypair: "{{ vault_ec2_keypair }}"
+# which EC2 region to use
+ec2_region: "eu-central-1"
+# which AMI to use as a template
+# ami-04cf43aca3e6f3de3 for CentOS 7
+ec2_ami: "ami-04cf43aca3e6f3de3"

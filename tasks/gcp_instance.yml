@@ -1,10 +1,4 @@
 ---
-- name: check instance_flavor is defined
-  assert:
-    that:
-    - instance_flavor is defined
-    fail_msg: instance_flavor ist not defined
-
 - name: create {{ instance_name }} disk
   gcp_compute_disk:
       name: "{{ instance_name }}-disk"

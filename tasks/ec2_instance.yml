@@ -12,7 +12,7 @@
       - 22
       cidr_ip: 0.0.0.0/0
       rule_desc: allow all on port 80
-    region: eu-central-1
+    region: "{{ ec2_region }}"
 
 - name: create EC2 instance
   ec2_instance:

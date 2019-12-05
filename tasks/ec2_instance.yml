@@ -1,7 +1,7 @@
 ---
 - name: create security group
   ec2_group:
-    name: "{{ isnstance_name }}"
+    name: "{{ instance_name }}"
     description: HTTP, HTTPS and SSH
     state: present
     rules:

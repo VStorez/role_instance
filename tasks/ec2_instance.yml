@@ -1,16 +1,4 @@
 ---
-- debug: msg="{{ lookup('env','AWS_ACCESS_KEY_ID') }} is an environment variable"
-  register: key
-
-- debug:
-    var: key
-
-- debug: msg="{{ lookup('env','AWS_SECRET_ACCESS_KEY') }} is an environment variable"
-  register: key
-
-- debug:
-    var: key
-
 - name: create security group
   ec2_group:
     name: "{{ instance_name }}"
@@ -38,3 +26,5 @@
     name: "{{ instance_name }}"
     key_name: "{{ ec2_keypair }}"
     region: "{{ ec2_region }}"
+    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+    aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"

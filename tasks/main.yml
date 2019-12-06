@@ -18,13 +18,13 @@
     - instance_flavor is defined
     fail_msg: "instance_flavor ist not defined"
 
-- name: create instance on gcp
+- name: create instance on GCP
   import_tasks: gcp_instance.yml
   when:
   - type == "gcp"
   - remove is not defined
 
-- name:  remove instance on gcp
+- name:  remove instance on GCP
   import_tasks: gcp_remove_instance.yml
   when:
   - type == "gcp"
@@ -35,3 +35,9 @@
   when:
   - type == "ec2"
   - remove is not defined
+
+- name:  remove instance on EC2
+  import_tasks: ec2_remove_instance.yml
+  when:
+  - type == "ec2"
+  - remove is defined

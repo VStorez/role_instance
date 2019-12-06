@@ -7,6 +7,7 @@
     # Error in describe_security_groups: Unable to locate credentials
     aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
     aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
+    state: absent
 
 - name: remove security group
   ec2_group:

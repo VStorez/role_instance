@@ -1,0 +1,27 @@
+---
+- name: log into RHV
+  ovirt_auth:
+    hostname: "{{ rhv_hostname }}"
+    insecure: true
+    username: "{{ rhv_username }}"
+    password: "{{ rhv_password }}"
+    state: present
+
+- name: create Disk
+  ovirt_disk:
+    auth: "{{ ovirt_auth }}"
+    size: 20GiB
+    storage_domain: "{{ rhv_storage_domain }}"
+    name: "{{ instance_name }}_disk"
+
+- name: create Virtual Machine
+  ovirt_vm:
+    auth: "{{ ovirt_auth }}"
+    cluster: "{{ rhv_cluster }}"
+    name: "{{ instance_name }}"
+    nics:
+    - name: nic1
+      profile_name: ovirtmgmt
+    disks:
+    - name: "{{ instance_name }}_disk"
+      bootable: true

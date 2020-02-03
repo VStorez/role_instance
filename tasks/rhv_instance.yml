@@ -20,6 +20,7 @@
     cluster: "{{ rhv_cluster }}"
     name: "{{ instance_name }}"
     memory: "{{ rhv_memory }}"
+    cpu_cores: "{{ rhv_cores }}"
     nics:
     - name: nic1
       profile_name: ovirtmgmt

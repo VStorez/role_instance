@@ -19,6 +19,7 @@
     auth: "{{ ovirt_auth }}"
     cluster: "{{ rhv_cluster }}"
     name: "{{ instance_name }}"
+    memory: "{{ rhv_memory }}"
     nics:
     - name: nic1
       profile_name: ovirtmgmt

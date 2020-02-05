@@ -1,10 +1,8 @@
 ---
 - name: log into RHV
   ovirt_auth:
-    hostname: "{{ rhv_hostname }}"
+    # no credentials are needed, if environment variables are used (OVIRT_HOSTNAME, OVIRT_USERNAME, OVIRT_PASSWORD)
     insecure: true
-    username: "{{ rhv_username }}"
-    password: "{{ rhv_password }}"
     state: present
 
 - name: remove Virtual Machine

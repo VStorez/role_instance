@@ -5,18 +5,21 @@
     - type is defined
     - type == "gcp" or type == "ec2" or type == "rhv"
     fail_msg: "type has to be ec2, gcp or rhv"
+    success_msg: "type is defined"
 
 - name: check instance parameters
   assert:
     that:
     - instance_name is defined
     fail_msg: "instance_name is not defined"
+    success_msg: "instance_name is defined"
 
 - name: check instance_flavor is defined
   assert:
     that:
     - instance_flavor is defined
     fail_msg: "instance_flavor is not defined"
+    success_msg: "instance_flavor is defined"
 
 - name: create instance on GCP
   import_tasks: gcp_instance.yml

@@ -3,7 +3,7 @@
   gcp_compute_disk:
       name: "{{ instance_name }}-disk"
       size_gb: 20
-      source_image: 'projects/centos-cloud/global/images/family/centos-7'
+      source_image: "{{ gcp_template }}"
       state: present
       zone: "{{ gcp_zone }}"
   register: disk

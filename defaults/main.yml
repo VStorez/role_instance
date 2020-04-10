@@ -33,3 +33,12 @@ gcp_region: europe-west2
 gcp_zone: europe-west2-a
 # create resources in a specific project
 gcp_project: tower
+
+# which RHV storage domain is used for the disk
+rhv_storage_domain: Default
+# RHV Cluster:
+rhv_cluster: Default
+# Memory in GB
+rhv_memory: 4GiB
+# Number of CPU Cores
+rhv_cores: 2

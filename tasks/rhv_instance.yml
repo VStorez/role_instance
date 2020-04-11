@@ -12,6 +12,23 @@
     storage_domain: "{{ rhv_storage_domain }}"
     name: "{{ instance_name }}_disk"
 
+- name: create Virtual Machine with defined MAC address
+  ovirt_vm:
+    auth: "{{ ovirt_auth }}"
+    cluster: "{{ rhv_cluster }}"
+    name: "{{ instance_name }}"
+    memory: "{{ rhv_memory }}"
+    cpu_cores: "{{ rhv_cores }}"
+    type: server
+    nics:
+    - name: nic1
+      profile_name: ovirtmgmt
+      mac_address: "{{ instance_mac_address }}"
+    disks:
+    - name: "{{ instance_name }}_disk"
+      bootable: true
+  when: instance_mac_address is defined
+
 - name: create Virtual Machine
   ovirt_vm:
     auth: "{{ ovirt_auth }}"
@@ -26,3 +43,4 @@
     disks:
     - name: "{{ instance_name }}_disk"
       bootable: true
+  when: instance_mac_address is not defined

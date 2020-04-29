@@ -3,8 +3,8 @@
   assert:
     that:
     - type is defined
-    - type == "gcp" or type == "ec2" or type == "rhv"
-    fail_msg: "type has to be ec2, gcp or rhv"
+    - type == "gcp" or type == "azure" or type == "ec2" or type == "rhv"
+    fail_msg: "type has to be azure, ec2, gcp or rhv"
     success_msg: "type is defined"
 
 - name: check instance parameters
@@ -21,13 +21,25 @@
     fail_msg: "instance_flavor is not defined"
     success_msg: "instance_flavor is defined"
 
+- name: create instance on Azure
+  import_tasks: azure_instance.yml
+  when:
+  - type == "azure"
+  - remove is not defined
+
+- name: remove instance from Azure
+  import_tasks: azure_remove_instance.yml
+  when:
+  - type == "azure"
+  - remove is defined
+
 - name: create instance on GCP
   import_tasks: gcp_instance.yml
   when:
   - type == "gcp"
   - remove is not defined
 
-- name:  remove instance on GCP
+- name:  remove instance from GCP
   import_tasks: gcp_remove_instance.yml
   when:
   - type == "gcp"
@@ -39,7 +51,7 @@
   - type == "ec2"
   - remove is not defined
 
-- name:  remove instance on EC2
+- name:  remove instance from EC2
   import_tasks: ec2_remove_instance.yml
   when:
   - type == "ec2"
@@ -51,7 +63,7 @@
   - type == "rhv"
   - remove is not defined
 
-- name: remove instance on RHV
+- name: remove instance from RHV
   import_tasks: rhv_remove_instance.yml
   when:
   - type == "rhv"

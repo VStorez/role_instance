@@ -1,5 +1,5 @@
 ---
-- name: create security group
+- name: create security group {{ instance_name }}
   ec2_group:
     name: "{{ instance_name }}"
     description: HTTP, HTTPS and SSH
@@ -18,7 +18,7 @@
       rule_desc: allow all on port 80
     region: "{{ ec2_region }}"
 
-- name: create EC2 instance
+- name: create EC2 instance {{ instance_name }}
   ec2_instance:
     image_id: "{{ ec2_ami }}"
     instance_type: "{{ instance_flavor }}"

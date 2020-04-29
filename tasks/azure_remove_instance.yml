@@ -1,0 +1,43 @@
+---
+- name: remove virtual machine {{ instance_name }}
+  azure_rm_virtualmachine:
+    resource_group: "{{ instance_name }}"
+    name: "{{ instance_name }}"
+    admin_username: azure
+    ssh_password_enabled: false
+    ssh_public_keys:
+    - path: /home/azure/.ssh/authorized_keys
+      key_data: "{{ azure_ssh_public_key }}"
+    image:
+      offer: RHEL
+      publisher: RedHat
+      sku: 8-lvm-gen2
+      version: latest
+    state: absent
+
+- name: remove network interface of VM {{ instance_name }}
+  azure_rm_networkinterface:
+    resource_group: "{{ instance_name }}"
+    name: "{{ instance_name }}"
+    subnet_name: "{{ instance_name }}"
+    virtual_network: "{{ instance_name }}"
+    state: absent
+
+- name: remove subnet {{ instance_name }}
+  azure_rm_subnet:
+    resource_group: "{{ instance_name }}"
+    virtual_network_name: "{{ instance_name }}"
+    name: "{{ instance_name }}"
+    state: absent
+
+- name: remove virtual network {{ instance_name }}
+  azure_rm_virtualnetwork:
+    resource_group: "{{ instance_name }}"
+    name: "{{ instance_name }}"
+    state: absent
+
+- name: remove resource group {{ instance_name }} and all associated resources
+  azure_rm_resourcegroup:
+    name: "{{ instance_name }}"
+    state: absent
+    force_delete_nonempty: true

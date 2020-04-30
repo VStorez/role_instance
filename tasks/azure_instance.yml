@@ -25,7 +25,7 @@
     name: "{{ instance_name }}"
     vm_size: "{{ instance_flavor}}"
     managed_disk_type: Premium_LRS
-    admin_username: azure
+    admin_username: ansible
     virtual_network_name: "{{ instance_name }}"
     ssh_password_enabled: false
     ssh_public_keys:

@@ -12,7 +12,7 @@
       address_prefixes_cidr: "10.1.0.0/16"
       state: present
 
-- name: create a subnet {{ instance_name }}
+- name: create subnet {{ instance_name }}
   azure_rm_subnet:
     resource_group: "{{ instance_name }}"
     virtual_network_name: "{{ instance_name }}"

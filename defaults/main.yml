@@ -15,7 +15,7 @@ instance_flavor: t3.large
 type: ec2
 
 # public key to inject into instance
-azure_ssh_public_key: {{ vault_azure_ssh_public_key }}
+azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
 
 # keypair which will be injected into the VM
 ec2_keypair: ""

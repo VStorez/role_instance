@@ -29,7 +29,7 @@
     virtual_network_name: "{{ instance_name }}"
     ssh_password_enabled: false
     ssh_public_keys:
-    - path: /home/azure/.ssh/authorized_keys
+    - path: /home/ansible/.ssh/authorized_keys
       key_data: "{{ azure_ssh_public_key }}"
     image:
       offer: RHEL

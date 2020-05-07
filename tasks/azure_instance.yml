@@ -31,9 +31,15 @@
     ssh_public_keys:
     - path: /home/ansible/.ssh/authorized_keys
       key_data: "{{ azure_ssh_public_key }}"
+    # image:
+    #   offer: RHEL
+    #   publisher: RedHat
+    #   sku: 8-lvm-gen2
+    #   version: latest
+    # state: present
     image:
       offer: RHEL
       publisher: RedHat
-      sku: 8-lvm-gen2
+      sku: 7lvm-gen2
       version: latest
     state: present

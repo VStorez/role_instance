@@ -12,7 +12,7 @@
       address_prefixes_cidr: "10.1.0.0/16"
       state: present
 
-- name: create a subnet {{ instance_name }}
+- name: create subnet {{ instance_name }}
   azure_rm_subnet:
     resource_group: "{{ instance_name }}"
     virtual_network_name: "{{ instance_name }}"
@@ -29,11 +29,17 @@
     virtual_network_name: "{{ instance_name }}"
     ssh_password_enabled: false
     ssh_public_keys:
-    - path: /home/azure/.ssh/authorized_keys
+    - path: /home/ansible/.ssh/authorized_keys
       key_data: "{{ azure_ssh_public_key }}"
+    # image:
+    #   offer: RHEL
+    #   publisher: RedHat
+    #   sku: 8-lvm-gen2
+    #   version: latest
+    # state: present
     image:
       offer: RHEL
       publisher: RedHat
-      sku: 8-lvm-gen2
+      sku: 7lvm-gen2
       version: latest
     state: present

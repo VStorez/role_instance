@@ -22,6 +22,9 @@ azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
 # instance_flavor: Standard_DS4
 # for 1 CPU, 1 GB RAM
 # instance_flavor: Standard_B1s
+azure_image_offer: RHEL
+azure_image_publisher: RedHat
+azure_image_sku: 7lvm-gen2
 
 # keypair which will be injected into the VM
 ec2_keypair: ""

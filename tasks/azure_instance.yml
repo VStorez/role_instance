@@ -19,22 +19,6 @@
     name: "{{ instance_name }}"
     address_prefix_cidr: "10.1.0.0/24"
 
-# - name: create security group {{ instance_name }}
-#   azure_rm_securitygroup:
-#     resource_group: "{{ instance_name }}"
-#     state: present
-#     location: "{{ azure_location }}"
-#     rules:
-#     - name: Web
-#       protocol: Tcp
-#       destination_port_range:
-#       - 80
-#       - 443
-#       access: Allow
-#       priority: 101
-#       direction: Inbound
-#     name: "{{ instance_name }}"
-
 - name: create virtual machine {{ instance_name }}
   azure_rm_virtualmachine:
     resource_group: "{{ instance_name }}"

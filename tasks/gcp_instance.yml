@@ -2,7 +2,7 @@
 - name: create {{ instance_name }} disk
   gcp_compute_disk:
       name: "{{ instance_name }}-disk"
-      size_gb: 20
+      size_gb: "{{ instance_disk_size }}"
       source_image: "{{ gcp_template }}"
       state: present
       zone: "{{ gcp_zone }}"
@@ -21,16 +21,30 @@
       region: "{{ gcp_region }}"
   register: address
 
-- name: allow SSH, HTTP and HTTPS traffic
+- name: check image is Windows
+  set_fact:
+    port_list:
+    - 80
+    - 443
+    - 3389
+    - 5985
+  when: gcp_template is search ("indows")
+
+- name: check image is not Windows
+  set_fact:
+    port_list:
+    - 22
+    - 80
+    - 443
+  when: not gcp_template is search ("indows")
+
+- name: allow instance incoming traffic
   gcp_compute_firewall:
       name: "{{ instance_name }}-firewall"
       state: present
       allowed:
       - ip_protocol: tcp
-        ports:
-        - '22'
-        - '80'
-        - '443'
+        ports: "{{ port_list }}"
       network: "{{ network }}"
 
 - name: create {{ instance_name }} instance
@@ -57,4 +71,6 @@
     port: 22
     delay: 10
     timeout: 60
-  when: instance.changed
+  when:
+  - instance.changed
+  - not gcp_template is search ("indows")

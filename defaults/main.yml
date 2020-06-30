@@ -54,3 +54,6 @@ rhv_cluster: Default
 rhv_memory: 4GiB
 # Number of CPU Cores
 rhv_cores: 2
+
+# remove == true to delete an instance
+remove: false

@@ -25,46 +25,46 @@
   include_tasks: azure_instance.yml
   when:
   - type == "azure"
-  - remove is not defined
+  - not remove | bool
 
 - name: remove instance from Azure
   include_tasks: azure_remove_instance.yml
   when:
   - type == "azure"
-  - remove is defined
+  - remove | bool
 
 - name: create instance on GCP
   include_tasks: gcp_instance.yml
   when:
   - type == "gcp"
-  - remove is not defined
+  - not remove | bool
 
 - name:  remove instance from GCP
   include_tasks: gcp_remove_instance.yml
   when:
   - type == "gcp"
-  - remove is defined
+  - remove | bool
 
 - name: create instance on EC2
   include_tasks: ec2_instance.yml
   when:
   - type == "ec2"
-  - remove is not defined
+  - not remove | bool
 
 - name:  remove instance from EC2
   include_tasks: ec2_remove_instance.yml
   when:
   - type == "ec2"
-  - remove is defined
+  - remove | bool
 
 - name: create instance on RHV
   include_tasks: rhv_instance.yml
   when:
   - type == "rhv"
-  - remove is not defined
+  - not remove | bool
 
 - name: remove instance from RHV
   include_tasks: rhv_remove_instance.yml
   when:
   - type == "rhv"
-  - remove is defined
+  - remove | bool

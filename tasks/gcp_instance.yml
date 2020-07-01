@@ -53,7 +53,7 @@
       name: "{{ instance_name }}"
       machine_type: "{{ instance_flavor }}"
       metadata:
-       sysprep-specialize-script-url: https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
+        sysprep-specialize-script-url: https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
       disks:
         - auto_delete: true
           boot: true

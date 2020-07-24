@@ -9,6 +9,9 @@ instance_name: example
 # for GCP use n1-standard-2
 # for EC2 use t3.large
 instance_flavor: t3.large
+# GCP and other providers allow to set individual disk size for first disk
+# value is in GB
+instance_disk_size: 20
 
 # in which platform to create the instance or vm
 # currently either gcp or ec2

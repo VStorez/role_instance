@@ -2,7 +2,7 @@
 - name: create {{ instance_name }} disk
   gcp_compute_disk:
       name: "{{ instance_name }}-disk"
-      size_gb: 20
+      size_gb: "{{ instance_disk_size }}"
       source_image: "{{ gcp_template }}"
       state: present
       zone: "{{ gcp_zone }}"
@@ -21,16 +21,30 @@
       region: "{{ gcp_region }}"
   register: address
 
-- name: allow SSH, HTTP and HTTPS traffic
+- name: open network ports for Windows
+  set_fact:
+    port_list:
+    - 80
+    - 443
+    - 3389
+    - 5986
+  when: gcp_template is search ("indows")
+
+- name: open network ports for Linux
+  set_fact:
+    port_list:
+    - 22
+    - 80
+    - 443
+  when: not gcp_template is search ("indows")
+
+- name: allow instance incoming traffic
   gcp_compute_firewall:
       name: "{{ instance_name }}-firewall"
       state: present
       allowed:
       - ip_protocol: tcp
-        ports:
-        - '22'
-        - '80'
-        - '443'
+        ports: "{{ port_list }}"
       network: "{{ network }}"
 
 - name: create {{ instance_name }} instance
@@ -38,6 +52,8 @@
       state: present
       name: "{{ instance_name }}"
       machine_type: "{{ instance_flavor }}"
+      metadata:
+        sysprep-specialize-script-url: https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
       disks:
         - auto_delete: true
           boot: true
@@ -57,4 +73,6 @@
     port: 22
     delay: 10
     timeout: 60
-  when: instance.changed
+  when:
+  - instance.changed
+  - not gcp_template is search ("indows")

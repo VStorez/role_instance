@@ -41,7 +41,7 @@
   when: not ec2_ami_id
 
 - name: Create EC2 {{ ec2_os_type }} instance {{ instance_name }}
-  community.aws.ec2_instance: 
+  community.aws.ec2_instance:
     image_id: "{{ ami_find.images[-1].image_id | default('') }}"
     instance_type: "{{ instance_flavor }}"
     security_group: "{{ instance_name }}"
@@ -65,7 +65,7 @@
 - name: Print Public DNS for the instance
   ansible.builtin.debug:
     msg: "Instance's public IP and DNS are: {{ ec2.instances[0].public_ip_address }} // {{ ec2.instances[0].public_dns_name }}"
-    
+
 - name: Print Administrator password
   ansible.builtin.debug:
     msg: "Windows Local Administrator password is: {{ (ec2_windows_password.results | first).win_password }}"

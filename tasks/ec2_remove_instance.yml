@@ -4,6 +4,7 @@
     name: "{{ instance_name }}"
     region: "{{ ec2_region }}"
     state: absent
+
 - name: Remove EC2 security group {{ instance_name }}
   amazon.aws.ec2_group:
     name: "{{ instance_name }}"

@@ -23,7 +23,7 @@
   azure_rm_virtualmachine:
     resource_group: "{{ instance_name }}"
     name: "{{ instance_name }}"
-    vm_size: "{{ instance_flavor}}"
+    vm_size: "{{ instance_flavor }}"
     managed_disk_type: Premium_LRS
     admin_username: ansible
     virtual_network_name: "{{ instance_name }}"

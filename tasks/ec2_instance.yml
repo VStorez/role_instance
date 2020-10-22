@@ -1,30 +1,72 @@
 ---
-- name: create security group {{ instance_name }}
-  ec2_group:
+- name: Create security group {{ instance_name }} (HTTP, HTTPS and SSH)
+  amazon.aws.ec2_group:
     name: "{{ instance_name }}"
     description: HTTP, HTTPS and SSH
-    # without the two following lines I received the error:
-    # Error in describe_security_groups: Unable to locate credentials
-    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
-    aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
     state: present
     rules:
     - proto: tcp
       ports:
-      - 80
-      - 443
-      - 22
+        - 80
+        - 443
+        - 22
       cidr_ip: 0.0.0.0/0
-      rule_desc: allow all on port 80
+      rule_desc: allow all on ports 80, 443 & 22
     region: "{{ ec2_region }}"
+  when: ec2_os_type == "linux"
 
-- name: create EC2 instance {{ instance_name }}
-  ec2_instance:
-    image_id: "{{ ec2_ami }}"
+- name: Create security group {{ instance_name }} (HTTP, HTTPS, WinRM and RDP)
+  amazon.aws.ec2_group:
+    name: "{{ instance_name }}"
+    description: HTTP, HTTPS, WinRM and RDP
+    state: present
+    rules:
+    - proto: tcp
+      ports:
+        - 80
+        - 443
+        - 3389
+        - 5986
+      cidr_ip: 0.0.0.0/0
+      rule_desc: allow all on ports 80, 443 & 5986
+    region: "{{ ec2_region }}"
+  when: ec2_os_type == "windows"
+
+- name: Find AMI for with filter "{{ ec2_image_name }}"
+  amazon.aws.ec2_ami_info:
+    filters:
+      name: "{{ ec2_image_name }}"
+    region: "{{ ec2_region }}"
+  register: ami_find
+  when: not ec2_ami_id
+
+- name: Create EC2 {{ ec2_os_type }} instance {{ instance_name }}
+  community.aws.ec2_instance: 
+    image_id: "{{ ami_find.images[-1].image_id | default('') }}"
     instance_type: "{{ instance_flavor }}"
     security_group: "{{ instance_name }}"
     name: "{{ instance_name }}"
     key_name: "{{ ec2_keypair }}"
     region: "{{ ec2_region }}"
-    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
-    aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
+  register: ec2
+
+- name: Obtain Administrator password for {{ instance_name }}
+  community.aws.ec2_win_password:
+    instance_id: "{{ item.instance_id }}"
+    region: "{{ ec2_region }}"
+    key_file: "{{ ec2_key_file }}"
+    wait: yes
+    wait_timeout: 45
+  with_items: "{{ ec2.instances }}"
+  register: ec2_windows_password
+  no_log: true
+  when: ec2_os_type == "windows" and ec2_key_file
+
+- name: Print Public DNS for the instance
+  ansible.builtin.debug:
+    msg: "Instance's public IP and DNS are: {{ ec2.instances[0].public_ip_address }} // {{ ec2.instances[0].public_dns_name }}"
+    
+- name: Print Administrator password
+  ansible.builtin.debug:
+    msg: "Windows Local Administrator password is: {{ (ec2_windows_password.results | first).win_password }}"
+  when: ec2_os_type == "windows" and ec2_key_file

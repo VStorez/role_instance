@@ -1,18 +1,11 @@
 ---
-- name: remove instance
-  ec2_instance:
+- name: Remove EC2 {{ ec2_os_type }} instance {{ instance_name }}
+  community.aws.ec2_instance:
     name: "{{ instance_name }}"
     region: "{{ ec2_region }}"
-    # without the two following lines I received the error:
-    # Error in describe_security_groups: Unable to locate credentials
-    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
-    aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
     state: absent
-
-- name: remove security group
-  ec2_group:
+- name: Remove EC2 security group {{ instance_name }}
+  amazon.aws.ec2_group:
     name: "{{ instance_name }}"
-    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
-    aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
-    state: absent
     region: "{{ ec2_region }}"
+    state: absent

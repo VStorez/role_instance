@@ -70,3 +70,11 @@
   ansible.builtin.debug:
     msg: "Windows Local Administrator password is: {{ (ec2_windows_password.results | first).win_password }}"
   when: ec2_os_type == "windows" and ec2_key_file
+
+- name: Add host to an in_memory inventory
+  ansible.builtin.add_host:
+    name: "{{ instance_name }}"
+    ansible_host: "{{ ec2.instances[0].public_ip_address }}"
+    ansible_user: ec2-user
+    ansible_ssh_private_key_file: "{{ ec2_key_file }}"
+  when: ec2_os_type == "linux" and ec2_key_file

@@ -59,7 +59,7 @@ ec2_ami_id: ""
 # which OS to provision (linux or windows)
 ec2_os_type: "linux"
 
-# Needed to obtain windows admin password "path/to/keyfile.pem"
+# "path/to/keyfile.pem"
 ec2_key_file: ""
 # which AMI's to search from AWS
 # RHEL 7: "RHEL-7.9_HVM_GA*x86_64*"

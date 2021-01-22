@@ -1,16 +1,16 @@
 ---
 - name: create resource group {{ instance_name }}
   azure_rm_resourcegroup:
-      name: "{{ instance_name }}"
-      location: "{{ azure_location }}"
-      state: present
+    name: "{{ instance_name }}"
+    location: "{{ azure_location }}"
+    state: present
 
 - name: create virtual network {{ instance_name }}
   azure_rm_virtualnetwork:
-      resource_group: "{{ instance_name }}"
-      name: "{{ instance_name }}"
-      address_prefixes_cidr: "10.1.0.0/16"
-      state: present
+    resource_group: "{{ instance_name }}"
+    name: "{{ instance_name }}"
+    address_prefixes_cidr: "10.1.0.0/16"
+    state: present
 
 - name: create subnet {{ instance_name }}
   azure_rm_subnet:
@@ -41,3 +41,14 @@
       sku: "{{ azure_image_sku }}"
       version: latest
     state: present
+  register: vm
+
+- name: update DNS record
+  include_role:
+    name: nsupdate
+  vars:
+    ipaddress: "{{ vm.ansible_facts.azure_vm.properties. networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    instance_name: "{{ instance_name }}"
+    keyfile: "{{ dns_keyfile }}"
+    suffix: "{{ dns_suffix }}"
+    mode: update

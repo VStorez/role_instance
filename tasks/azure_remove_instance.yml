@@ -1,26 +1,19 @@
 ---
-- name: collect facts from resource group
-  azure_rm_resource_info:
-    name: "{{ instance_name }}"
-  register: rg
-
-- name: collect facts for existing virtual machine
-  azure_rm_virtualmachine_info:
-    name: "{{ instance_name }}"
-    resource_group: "{{ instance_name }}"
-  register: vm
-  when: rg is defined
+- name: check if there is a DNS record
+  shell: host {{ instance_name }}.{{ dns_suffix }}.ansible-labs.de
+  changed_when: false
+  register: lookup
+  ignore_errors: true
 
 - name: remove DNS record
   include_role:
     name: nsupdate
   vars:
-    ipaddress: "{{ vm.ansible_facts.azure_vm.properties. networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
     instance_name: "{{ instance_name }}"
     keyfile: "{{ dns_keyfile }}"
     suffix: "{{ dns_suffix }}"
     mode: remove
-  when: vm is defined
+  when: lookup.rc == 0
 
 - name: remove virtual machine {{ instance_name }}
   azure_rm_virtualmachine:
@@ -28,6 +21,7 @@
     name: "{{ instance_name }}"
     admin_username: azure
     state: absent
+  ignore_errors: true
 
 - name: remove network interface of VM {{ instance_name }}
   azure_rm_networkinterface:
@@ -36,6 +30,7 @@
     subnet_name: "{{ instance_name }}"
     virtual_network: "{{ instance_name }}"
     state: absent
+  ignore_errors: true
 
 - name: remove subnet {{ instance_name }}
   azure_rm_subnet:
@@ -43,12 +38,14 @@
     virtual_network_name: "{{ instance_name }}"
     name: "{{ instance_name }}"
     state: absent
+  ignore_errors: true
 
 - name: remove virtual network {{ instance_name }}
   azure_rm_virtualnetwork:
     resource_group: "{{ instance_name }}"
     name: "{{ instance_name }}"
     state: absent
+  ignore_errors: true
 
 - name: remove resource group {{ instance_name }} and all associated resources
   azure_rm_resourcegroup:

@@ -52,3 +52,4 @@
     keyfile: "{{ dns_keyfile }}"
     suffix: "{{ dns_suffix }}"
     mode: update
+  when: dns_update | bool

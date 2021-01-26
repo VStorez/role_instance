@@ -13,7 +13,9 @@
     keyfile: "{{ dns_keyfile }}"
     suffix: "{{ dns_suffix }}"
     mode: remove
-  when: lookup.rc == 0
+  when:
+  - lookup.rc == 0
+  - dns_update | bool
 
 - name: remove virtual machine {{ instance_name }}
   azure_rm_virtualmachine:

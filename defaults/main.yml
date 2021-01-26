@@ -126,5 +126,5 @@ remove: false
 
 # update DNS records
 dns_update: true
-dns_suffix: cjung
+dns_suffix: example
 dns_keyfile: /path/to/keyfile

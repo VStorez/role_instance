@@ -1,5 +1,6 @@
 ---
-- azure_rm_virtualmachine_info:
+- name: collect facts for existing virtual machine
+  azure_rm_virtualmachine_info:
     name: "{{ instance_name }}"
     resource_group: "{{ instance_name }}"
   register: vm

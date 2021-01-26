@@ -16,17 +16,17 @@ instance_disk_size: 20
 # in which platform to create the instance or vm
 # currently either gcp or ec2
 type: ec2
-           
-################################                         
+
+################################
 #    __ _ _____   _ _ __ ___   #
 #   / _` |_  / | | | '__/ _ \  #
 #  | (_| |/ /| |_| | | |  __/  #
 #   \__,_/___|\__,_|_|  \___|  #
-################################                      
-                          
+################################
+
 # public key to inject into instance
 azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
-# standard flavvor is 2 CPU, 8 GB RAM
+# standard flavor is 2 CPU, 8 GB RAM
 # instance_flavor: Standard_DS2
 # for 4 CPU , 16 GB RAM
 # instance_flavor: Standard_DS4
@@ -69,8 +69,8 @@ ec2_key_file: ""
 # Windows Server 2016 full: "Windows_Server-2016-English-Full-Base*"
 # Windows Server 2016 core: "Windows_Server-2016-English-Core-Base*"
 ec2_image_name: "RHEL-8.2_HVM*x86_64*"
-                   
-########################                   
+
+########################
 #    __ _  ___ _ __    #
 #   / _` |/ __| '_ \   #
 #  | (_| | (__| |_) |  #
@@ -100,8 +100,8 @@ gcp_project: tower
 #  | |  | | | \ V /   #
 #  |_|  |_| |_|\_/    #
 #                     #
-#######################              
-                  
+#######################
+
 # which RHV storage domain is used for the disk
 rhv_storage_domain: Default
 # RHV Cluster:
@@ -113,3 +113,18 @@ rhv_cores: 2
 
 # remove == true to delete an instance
 remove: false
+
+#######################
+#      _              #
+#      | |            #
+#    __| |_ __  ___   #
+#   / _` | '_ \/ __|  #
+#  | (_| | | | \__ \  #
+#   \__,_|_| |_|___/  #
+#                     #
+#######################
+
+# update DNS records
+dns_update: false
+dns_suffix: example
+dns_keyfile: /path/to/keyfile

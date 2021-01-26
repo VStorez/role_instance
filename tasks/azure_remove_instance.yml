@@ -1,9 +1,15 @@
 ---
+- name: collect facts from resource group
+  azure_rm_resource_info:
+    name: "{{ instance_name }}"
+  register: rg
+
 - name: collect facts for existing virtual machine
   azure_rm_virtualmachine_info:
     name: "{{ instance_name }}"
     resource_group: "{{ instance_name }}"
   register: vm
+  when: rg is defined
 
 - name: remove DNS record
   include_role:

@@ -1,4 +1,20 @@
 ---
+- azure_rm_virtualmachine_info:
+    name: "{{ instance_name }}"
+    resource_group: "{{ instance_name }}"
+  register: vm
+
+- name: remove DNS record
+  include_role:
+    name: nsupdate
+  vars:
+    ipaddress: "{{ vm.ansible_facts.azure_vm.properties. networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    instance_name: "{{ instance_name }}"
+    keyfile: "{{ dns_keyfile }}"
+    suffix: "{{ dns_suffix }}"
+    mode: remove
+  when: vm is defined
+
 - name: remove virtual machine {{ instance_name }}
   azure_rm_virtualmachine:
     resource_group: "{{ instance_name }}"

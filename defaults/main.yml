@@ -26,7 +26,7 @@ type: ec2
 
 # public key to inject into instance
 azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
-# standard flavvor is 2 CPU, 8 GB RAM
+# standard flavor is 2 CPU, 8 GB RAM
 # instance_flavor: Standard_DS2
 # for 4 CPU , 16 GB RAM
 # instance_flavor: Standard_DS4

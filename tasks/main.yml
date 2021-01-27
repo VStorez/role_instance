@@ -39,7 +39,7 @@
   - type == "gcp"
   - not remove | bool
 
-- name:  remove instance from GCP
+- name: remove instance from GCP
   include_tasks: gcp_remove_instance.yml
   when:
   - type == "gcp"
@@ -51,7 +51,7 @@
   - type == "ec2"
   - not remove | bool
 
-- name:  remove instance from EC2
+- name: remove instance from EC2
   include_tasks: ec2_remove_instance.yml
   when:
   - type == "ec2"

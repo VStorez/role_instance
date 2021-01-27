@@ -1,5 +1,23 @@
 ---
-- name: Remove EC2 {{ ec2_os_type }} instance {{ instance_name }}
+- name: check if there is a DNS record
+  shell: host {{ instance_name }}.{{ dns_suffix }}.ansible-labs.de
+  changed_when: false
+  register: lookup
+  ignore_errors: true
+
+- name: remove DNS record
+  include_role:
+    name: nsupdate
+  vars:
+    instance_name: "{{ instance_name }}"
+    keyfile: "{{ dns_keyfile }}"
+    suffix: "{{ dns_suffix }}"
+    mode: remove
+  when:
+  - lookup.rc == 0
+  - dns_update | bool
+
+  - name: Remove EC2 {{ ec2_os_type }} instance {{ instance_name }}
   community.aws.ec2_instance:
     name: "{{ instance_name }}"
     region: "{{ ec2_region }}"

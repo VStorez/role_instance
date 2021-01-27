@@ -9,6 +9,7 @@
         "proto",
         "resourcegroup",
         "resourcegroups",
+        "subnetworks",
         "virtualmachine",
         "virtualnetwork"
     ]

@@ -67,6 +67,17 @@
       zone: "{{ gcp_zone }}"
   register: instance
 
+- name: update DNS record
+  include_role:
+    name: nsupdate
+  vars:
+    ipaddress: "{{ address.address }}"
+    instance_name: "{{ instance_name }}"
+    keyfile: "{{ dns_keyfile }}"
+    suffix: "{{ dns_suffix }}"
+    mode: update
+  when: dns_update | bool
+
 - name: wait for instance to start
   wait_for:
     host: "{{ address.address }}"

@@ -40,7 +40,7 @@
   register: ami_find
   when: not ec2_ami_id
 
-- name: Create EC2 {{ ec2_os_type }} instance {{ instance_name }}
+- name: Create EC2 {{ ec2_os_type }} instance {{ instance_name }} - this can take a minute
   community.aws.ec2_instance:
     image_id: "{{ ami_find.images[-1].image_id | default('') }}"
     instance_type: "{{ instance_flavor }}"
@@ -78,3 +78,14 @@
     ansible_user: ec2-user
     ansible_ssh_private_key_file: "{{ ec2_key_file }}"
   when: ec2_os_type == "linux" and ec2_key_file
+
+- name: update DNS record
+  include_role:
+    name: nsupdate
+  vars:
+    ipaddress: "{{ ec2.instances[0].public_ip_address }}"
+    instance_name: "{{ instance_name }}"
+    keyfile: "{{ dns_keyfile }}"
+    suffix: "{{ dns_suffix }}"
+    mode: update
+  when: dns_update | bool

@@ -17,7 +17,7 @@
   - lookup.rc == 0
   - dns_update | bool
 
-  - name: Remove EC2 {{ ec2_os_type }} instance {{ instance_name }}
+- name: Remove EC2 {{ ec2_os_type }} instance {{ instance_name }} - this can take a minute
   community.aws.ec2_instance:
     name: "{{ instance_name }}"
     region: "{{ ec2_region }}"

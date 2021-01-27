@@ -40,7 +40,7 @@
   register: ami_find
   when: not ec2_ami_id
 
-- name: Create EC2 {{ ec2_os_type }} instance {{ instance_name }}
+- name: Create EC2 {{ ec2_os_type }} instance {{ instance_name }} - this can take a minute
   community.aws.ec2_instance:
     image_id: "{{ ami_find.images[-1].image_id | default('') }}"
     instance_type: "{{ instance_flavor }}"

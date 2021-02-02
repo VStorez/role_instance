@@ -48,8 +48,16 @@
     name: nsupdate
   vars:
     ipaddress: "{{ vm.ansible_facts.azure_vm.properties. networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
-    instance_name: "{{ instance_name }}"
+    shortname: "{{ instance_name }}"
     keyfile: "{{ dns_keyfile }}"
     suffix: "{{ dns_suffix }}"
     mode: update
+  when: dns_update | bool
+
+- name: Add host to an in_memory inventory
+  ansible.builtin.add_host:
+    name: "{{ instance_name }}"
+    ansible_host: "{{ instance_name }}.{{ dns_suffix }}.ansible-labs.de"
+    groups:
+    - tower
   when: dns_update | bool

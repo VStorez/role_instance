@@ -58,6 +58,7 @@
   ansible.builtin.add_host:
     name: "{{ instance_name }}"
     ansible_host: "{{ instance_name }}.{{ dns_suffix }}.ansible-labs.de"
+    ansible_user: ansible
     groups:
     - tower
   when: dns_update | bool

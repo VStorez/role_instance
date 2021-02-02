@@ -9,7 +9,7 @@
   include_role:
     name: nsupdate
   vars:
-    instance_name: "{{ instance_name }}"
+    shortname: "{{ instance_name }}"
     keyfile: "{{ dns_keyfile }}"
     suffix: "{{ dns_suffix }}"
     mode: remove

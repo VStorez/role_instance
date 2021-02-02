@@ -19,7 +19,7 @@
     name: "{{ instance_name }}"
     address_prefix_cidr: "10.1.0.0/24"
 
-- name: create virtual machine {{ instance_name }}
+- name: create virtual machine {{ instance_name }} - this can take a minute
   azure_rm_virtualmachine:
     resource_group: "{{ instance_name }}"
     name: "{{ instance_name }}"

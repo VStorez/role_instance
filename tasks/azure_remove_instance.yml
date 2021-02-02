@@ -49,7 +49,7 @@
     state: absent
   ignore_errors: true
 
-- name: remove resource group {{ instance_name }} and all associated resources
+- name: remove resource group {{ instance_name }} and all associated resources - this can take a minute
   azure_rm_resourcegroup:
     name: "{{ instance_name }}"
     state: absent

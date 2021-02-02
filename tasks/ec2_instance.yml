@@ -32,7 +32,7 @@
     region: "{{ ec2_region }}"
   when: ec2_os_type == "windows"
 
-- name: Find AMI for with filter "{{ ec2_image_name }}"
+- name: Find AMI with filter "{{ ec2_image_name }}"
   amazon.aws.ec2_ami_info:
     filters:
       name: "{{ ec2_image_name }}"
@@ -60,31 +60,29 @@
   with_items: "{{ ec2.instances }}"
   register: ec2_windows_password
   no_log: true
-  when: ec2_os_type == "windows" and ec2_key_file
-
-- name: Print Public DNS for the instance
-  ansible.builtin.debug:
-    msg: "Instance's public IP and DNS are: {{ ec2.instances[0].public_ip_address }} // {{ ec2.instances[0].public_dns_name }}"
+  when: ec2_os_type == "windows"
 
 - name: Print Administrator password
   ansible.builtin.debug:
     msg: "Windows Local Administrator password is: {{ (ec2_windows_password.results | first).win_password }}"
-  when: ec2_os_type == "windows" and ec2_key_file
+  when: ec2_os_type == "windows"
 
 - name: Add host to an in_memory inventory
   ansible.builtin.add_host:
     name: "{{ instance_name }}"
-    ansible_host: "{{ ec2.instances[0].public_ip_address }}"
+    ansible_host: "{{ instance_name }}.{{ dns_suffix }}.ansible-labs.de"
     ansible_user: ec2-user
     ansible_ssh_private_key_file: "{{ ec2_key_file }}"
-  when: ec2_os_type == "linux" and ec2_key_file
+    groups:
+    - tower
+  when: ec2_os_type == "linux"
 
 - name: update DNS record
   include_role:
     name: nsupdate
   vars:
     ipaddress: "{{ ec2.instances[0].public_ip_address }}"
-    instance_name: "{{ instance_name }}"
+    shortname: "{{ instance_name }}"
     keyfile: "{{ dns_keyfile }}"
     suffix: "{{ dns_suffix }}"
     mode: update

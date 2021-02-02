@@ -73,7 +73,7 @@
     name: nsupdate
   vars:
     ipaddress: "{{ address.address }}"
-    instance_name: "{{ instance_name }}"
+    shortname: "{{ instance_name }}"
     keyfile: "{{ dns_keyfile }}"
     suffix: "{{ dns_suffix }}"
     mode: update

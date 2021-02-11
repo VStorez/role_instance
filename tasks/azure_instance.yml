@@ -60,5 +60,5 @@
     ansible_host: "{{ instance_name }}.{{ dns_suffix }}.ansible-labs.de"
     ansible_user: ansible
     groups:
-    - tower
+    - "{{ instance_group | default ('all_hosts') }}"
   when: dns_update | bool

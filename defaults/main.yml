@@ -85,7 +85,7 @@ ec2_image_name: "RHEL-8.2_HVM*x86_64*"
 # CentOS 7: projects/centos-cloud/global/images/family/centos-7
 # RHEL 8: projects/rhel-cloud/global/images/family/rhel-8
 # CentOS 8: projects/centos-cloud/global/images/family/centos-8
-gcp_template: projects/rhel-cloud/global/images/family/rhel-7
+gcp_template: projects/rhel-cloud/global/images/family/rhel-8
 # which GCP Region and Zone to use for the new VM
 gcp_region: europe-west2
 gcp_zone: europe-west2-a

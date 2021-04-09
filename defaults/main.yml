@@ -34,7 +34,7 @@ azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
 # instance_flavor: Standard_B1s
 azure_image_offer: RHEL
 azure_image_publisher: RedHat
-azure_image_sku: 7lvm-gen2
+azure_image_sku: 82gen2
 
 ######################
 #             ___    #

@@ -32,9 +32,11 @@ azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
 # instance_flavor: Standard_DS4
 # for 1 CPU, 1 GB RAM
 # instance_flavor: Standard_B1s
+# get list of images with the following command: (might require you to do az login first)
+# z vm image list-skus --output table --offer RHEL --location westeurope --publisher RedHat
 azure_image_offer: RHEL
 azure_image_publisher: RedHat
-azure_image_sku: 82gen2
+azure_image_sku: 8-lvm-gen2
 
 ######################
 #             ___    #

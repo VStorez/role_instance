@@ -32,9 +32,11 @@ azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
 # instance_flavor: Standard_DS4
 # for 1 CPU, 1 GB RAM
 # instance_flavor: Standard_B1s
+# get list of images with the following command: (might require you to do az login first)
+# z vm image list-skus --output table --offer RHEL --location westeurope --publisher RedHat
 azure_image_offer: RHEL
 azure_image_publisher: RedHat
-azure_image_sku: 7lvm-gen2
+azure_image_sku: 8-lvm-gen2
 
 ######################
 #             ___    #
@@ -85,7 +87,7 @@ ec2_image_name: "RHEL-8.2_HVM*x86_64*"
 # CentOS 7: projects/centos-cloud/global/images/family/centos-7
 # RHEL 8: projects/rhel-cloud/global/images/family/rhel-8
 # CentOS 8: projects/centos-cloud/global/images/family/centos-8
-gcp_template: projects/rhel-cloud/global/images/family/rhel-7
+gcp_template: projects/rhel-cloud/global/images/family/rhel-8
 # which GCP Region and Zone to use for the new VM
 gcp_region: europe-west2
 gcp_zone: europe-west2-a

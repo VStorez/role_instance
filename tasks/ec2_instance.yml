@@ -13,6 +13,12 @@
     region: "{{ ec2_region }}"
   register: subnet
 
+- name: Create internet gateway for VPC {{ instance_name }}
+  community.aws.ec2_vpc_igw:
+    vpc_id: "{{ vpc.vpc.id }}"
+    state: present
+  register: igw
+
 - name: Create security group {{ instance_name }} (HTTP, HTTPS and SSH)
   amazon.aws.ec2_group:
     name: "{{ instance_name }}"

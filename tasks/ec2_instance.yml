@@ -1,14 +1,21 @@
 ---
-- name: Create default VPC
+- name: Create {{ instance_name }} VPC
   amazon.aws.ec2_vpc_net:
     name: "{{ instance_name }}"
     cidr_block: 172.31.0.0/16
     region: "{{ ec2_region }}"
   register: vpc
 
-- name: debug vpc
+- name: Create {{ instance_name }} subnet
+  amazon.aws.ec2_vpc_subnet:
+    name: "{{ instance_name }}"
+    vpc_id: "{{ vpc.vpc.id }}"
+    cidr: 172.31.1.0/24
+  register: subnet
+
+- name: debug subnet
   debug:
-    var: vpc
+    var: subnet
 
 - name: Create security group {{ instance_name }} (HTTP, HTTPS and SSH)
   amazon.aws.ec2_group:

@@ -24,7 +24,7 @@
       cidr_ip: 0.0.0.0/0
       rule_desc: allow all on ports 80, 443 & 22
     region: "{{ ec2_region }}"
-    vpc_id: "{{ vpc.id }}"
+    vpc_id: "{{ vpc.vpc.id }}"
   when: ec2_os_type == "linux"
 
 - name: Create security group {{ instance_name }} (HTTP, HTTPS, WinRM and RDP)
@@ -42,7 +42,7 @@
       cidr_ip: 0.0.0.0/0
       rule_desc: allow all on ports 80, 443 & 5986
     region: "{{ ec2_region }}"
-    vpc_id: "{{ vpc.id }}"
+    vpc_id: "{{ vpc.vpc.id }}"
   when: ec2_os_type == "windows"
 
 - name: Find AMI with filter "{{ ec2_image_name }}"
@@ -61,7 +61,7 @@
     name: "{{ instance_name }}"
     key_name: "{{ ec2_keypair }}"
     region: "{{ ec2_region }}"
-    vpc_id: "{{ vpc.id }}"
+    vpc_id: "{{ vpc.vpc.id }}"
   register: ec2
 
 - name: Obtain Administrator password for {{ instance_name }}

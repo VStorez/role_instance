@@ -11,13 +11,29 @@
     vpc_id: "{{ vpc.vpc.id }}"
     cidr: 172.31.1.0/24
     region: "{{ ec2_region }}"
+    tags:
+      Name: "{{ instance_name }}"
   register: subnet
 
 - name: Create internet gateway for VPC {{ instance_name }}
   community.aws.ec2_vpc_igw:
     vpc_id: "{{ vpc.vpc.id }}"
+    tags:
+      Name: "{{ instance_name }}"
     state: present
   register: igw
+
+- name: Set up public subnet route table
+  community.aws.ec2_vpc_route_table:
+    vpc_id: "{{ vpc.vpc.id }}"
+    region: "{{ ec2_region }}"
+    tags:
+      Name: "{{ instance_name }}"
+    subnets:
+      - "{{ subnet.subnet.id }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ igw.gateway_id }}"
 
 - name: Create security group {{ instance_name }} (HTTP, HTTPS and SSH)
   amazon.aws.ec2_group:
@@ -34,6 +50,8 @@
       rule_desc: allow all on ports 80, 443 & 22
     region: "{{ ec2_region }}"
     vpc_id: "{{ vpc.vpc.id }}"
+    tags:
+      Name: "{{ instance_name }}"
   when: ec2_os_type == "linux"
 
 - name: Create security group {{ instance_name }} (HTTP, HTTPS, WinRM and RDP)
@@ -52,6 +70,8 @@
       rule_desc: allow all on ports 80, 443 & 5986
     region: "{{ ec2_region }}"
     vpc_id: "{{ vpc.vpc.id }}"
+    tags:
+      Name: "{{ instance_name }}"
   when: ec2_os_type == "windows"
 
 - name: Import SSH Key
@@ -76,6 +96,10 @@
     key_name: "{{ instance_name }}"
     region: "{{ ec2_region }}"
     vpc_subnet_id: "{{ subnet.subnet.id }}"
+    network:
+      assign_public_ip: true
+    tags:
+      Name: "{{ instance_name }}"
   register: ec2
 
 - name: Obtain Administrator password for {{ instance_name }}

@@ -6,9 +6,8 @@
     region: "{{ ec2_region }}"
   register: vpc
 
-- name: Create {{ instance_name }} subnet
+- name: Create subnet in VPC
   amazon.aws.ec2_vpc_subnet:
-    name: "{{ instance_name }}"
     vpc_id: "{{ vpc.vpc.id }}"
     cidr: 172.31.1.0/24
   register: subnet

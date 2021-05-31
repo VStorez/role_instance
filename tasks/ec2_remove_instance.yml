@@ -29,7 +29,7 @@
     region: "{{ ec2_region }}"
     state: absent
 
-- name: Remove VPC {{ "{{ instance_name }}
+- name: Remove VPC {{ instance_name }}
   amazon.aws.ec2_vpc_net:
     name: "{{ instance_name }}"
     state: absent

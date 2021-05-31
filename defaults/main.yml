@@ -49,7 +49,7 @@ azure_image_sku: 8-lvm-gen2
 ######################
 
 # keypair which will be injected into the VM (must exist in AWS)
-ec2_keypair: ""
+ec2_key_pair: ""
 # which EC2 region to use
 ec2_region: "eu-central-1"
 

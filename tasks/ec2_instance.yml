@@ -6,6 +6,10 @@
     region: "{{ ec2_region }}"
   register: vpc
 
+- name: debug vpc
+  debug:
+    var: vpc
+
 - name: Create security group {{ instance_name }} (HTTP, HTTPS and SSH)
   amazon.aws.ec2_group:
     name: "{{ instance_name }}"

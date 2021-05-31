@@ -51,7 +51,7 @@
 - name: Import SSH Key
   amazon.aws.ec2_key:
     name: "{{ instance_name }}"
-    key_material: "{{ lookup('file', ec2_key_file ) }}"
+    key_material: "{{ lookup('file', ec2_key_pair ) }}"
 
 - name: Find AMI with filter "{{ ec2_image_name }}"
   amazon.aws.ec2_ami_info:

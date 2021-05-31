@@ -69,7 +69,6 @@
     wait_timeout: 45
   with_items: "{{ ec2.instances }}"
   register: ec2_windows_password
-  vpc_id: vpc.id
   no_log: true
   when: ec2_os_type == "windows"
 

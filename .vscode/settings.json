@@ -9,8 +9,10 @@
         "proto",
         "resourcegroup",
         "resourcegroups",
+        "skus",
         "subnetworks",
         "virtualmachine",
-        "virtualnetwork"
+        "virtualnetwork",
+        "westeurope"
     ]
 }

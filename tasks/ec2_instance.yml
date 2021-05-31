@@ -48,6 +48,12 @@
     vpc_id: "{{ vpc.vpc.id }}"
   when: ec2_os_type == "windows"
 
+- name: Import SSH Key
+  amazon.aws.ec2_key:
+    name: "{{ instance_name }}"
+    key_material: "{{ lookup('file', ec2_key_file ) }}"
+  when: ec2_key_file != ""
+
 - name: Find AMI with filter "{{ ec2_image_name }}"
   amazon.aws.ec2_ami_info:
     filters:
@@ -62,7 +68,7 @@
     instance_type: "{{ instance_flavor }}"
     security_group: "{{ instance_name }}"
     name: "{{ instance_name }}"
-    key_name: "{{ ec2_keypair }}"
+    key_name: "{{ instance_name }}"
     region: "{{ ec2_region }}"
     vpc_subnet_id: "{{ subnet.subnet.id }}"
   register: ec2

@@ -3,7 +3,7 @@
   assert:
     that:
     - type is defined
-    - type == "gcp" or type == "azure" or type == "ec2" or type == "rhv"
+    - type == "gcp" or type == "azure" or type == "ec2" or type == "rhv" or type == "mock"
     fail_msg: "type has to be azure, ec2, gcp or rhv"
     success_msg: "type is defined"
 

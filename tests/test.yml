@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  roles:
+    - { role: role-instance, type: mock , remove: false}
+    - { role: role-instance, type: mock , remove: true }

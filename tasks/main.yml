@@ -3,7 +3,7 @@
   assert:
     that:
     - type is defined
-    - type == "gcp" or type == "azure" or type == "ec2" or type == "rhv"
+    - type == "gcp" or type == "azure" or type == "ec2" or type == "rhv" or type == "mock"
     fail_msg: "type has to be azure, ec2, gcp or rhv"
     success_msg: "type is defined"
 
@@ -21,50 +21,13 @@
     fail_msg: "instance_flavor is not defined"
     success_msg: "instance_flavor is defined"
 
-- name: create instance on Azure
-  include_tasks: azure_instance.yml
-  when:
-  - type == "azure"
-  - not remove | bool
+- name: create instance on {{ type }}
+  include_tasks: "{{ type }}_instance.yml"
+  when: 
+    - not remove | bool
 
-- name: remove instance from Azure
-  include_tasks: azure_remove_instance.yml
+- name: remove instance from {{ type }} 
+  include_tasks: "{{ type }}_remove_instance.yml"
   when:
-  - type == "azure"
-  - remove | bool
+   - remove | bool
 
-- name: create instance on GCP
-  include_tasks: gcp_instance.yml
-  when:
-  - type == "gcp"
-  - not remove | bool
-
-- name: remove instance from GCP
-  include_tasks: gcp_remove_instance.yml
-  when:
-  - type == "gcp"
-  - remove | bool
-
-- name: create instance on EC2
-  include_tasks: ec2_instance.yml
-  when:
-  - type == "ec2"
-  - not remove | bool
-
-- name: remove instance from EC2
-  include_tasks: ec2_remove_instance.yml
-  when:
-  - type == "ec2"
-  - remove | bool
-
-- name: create instance on RHV
-  include_tasks: rhv_instance.yml
-  when:
-  - type == "rhv"
-  - not remove | bool
-
-- name: remove instance from RHV
-  include_tasks: rhv_remove_instance.yml
-  when:
-  - type == "rhv"
-  - remove | bool

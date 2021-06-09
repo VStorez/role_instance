@@ -21,6 +21,7 @@
     tags:
       Name: "{{ instance_name }}"
     state: present
+    region: "{{ ec2_region }}"
   register: igw
 
 - name: Set up public subnet route table

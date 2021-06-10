@@ -72,6 +72,9 @@ ec2_key_file: ""
 # Windows Server 2016 core: "Windows_Server-2016-English-Core-Base*"
 ec2_image_name: "RHEL-8.2_HVM*x86_64*"
 
+# VPC objects will inherit the instance name if not explicitly overridden
+vpc_name: "{{ instance_name }}"
+
 ########################
 #    __ _  ___ _ __    #
 #   / _` |/ __| '_ \   #

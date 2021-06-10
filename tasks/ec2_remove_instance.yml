@@ -21,6 +21,7 @@
   amazon.aws.ec2_vpc_subnet_facts:
     filters:
       "tag:Name": "{{ instance_name }}"
+    region: "{{ ec2_region }}"
   register: subnet
 
 - name: Remove EC2 {{ ec2_os_type }} instance {{ instance_name }} - this can take a minute
@@ -35,6 +36,7 @@
   amazon.aws.ec2_key:
     name: "{{ instance_name }}"
     state: absent
+    region: "{{ ec2_region }}"
 
 - name: Remove EC2 security group {{ instance_name }}
   amazon.aws.ec2_group:
@@ -47,6 +49,7 @@
     vpc_id: "{{ subnet.subnets[0].vpc_id }}"
     state: absent
     cidr: "172.31.1.0/24"
+    region: "{{ ec2_region }}"
   when: subnet.subnets[0].subnet_id is defined
 
 - name: Gather Route Table information

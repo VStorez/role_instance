@@ -56,12 +56,14 @@
   community.aws.ec2_vpc_route_table_facts:
     filters:
       "tag:Name": "{{ instance_name }}"
+    region: "{{ ec2_region }}"
   register: route_table
 
 - name: Gather VPC information
   amazon.aws.ec2_vpc_net_facts:
     filters:
       "tag:Name": "{{ instance_name }}"
+    region: "{{ ec2_region }}"
   register: vpc
 
 - name: Remove Route Table
@@ -77,9 +79,11 @@
   community.aws.ec2_vpc_igw:
     state: absent
     vpc_id: "{{ vpc.vpcs[0].vpc_id }}"
+    region: "{{ ec2_region }}"
 
 - name: Remove VPC {{ instance_name }}
   amazon.aws.ec2_vpc_net:
     name: "{{ instance_name }}"
     cidr_block: "172.31.0.0/16"
     state: absent
+    region: "{{ ec2_region }}"

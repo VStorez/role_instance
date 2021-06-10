@@ -20,7 +20,7 @@
 - name: Gather subnet information
   amazon.aws.ec2_vpc_subnet_facts:
     filters:
-      "tag:Name": "{{ instance_name }}"
+      "tag:Name": "{{ vpc_name }}"
     region: "{{ ec2_region }}"
   register: subnet
 
@@ -34,7 +34,7 @@
 
 - name: Remove SSH Key pair
   amazon.aws.ec2_key:
-    name: "{{ instance_name }}"
+    name: "{{ vpc_name }}"
     state: absent
     region: "{{ ec2_region }}"
 
@@ -55,14 +55,14 @@
 - name: Gather Route Table information
   community.aws.ec2_vpc_route_table_facts:
     filters:
-      "tag:Name": "{{ instance_name }}"
+      "tag:Name": "{{ vpc_name }}"
     region: "{{ ec2_region }}"
   register: route_table
 
 - name: Gather VPC information
   amazon.aws.ec2_vpc_net_facts:
     filters:
-      "tag:Name": "{{ instance_name }}"
+      "tag:Name": "{{ vpc_name }}"
     region: "{{ ec2_region }}"
   register: vpc
 
@@ -81,9 +81,9 @@
     vpc_id: "{{ vpc.vpcs[0].vpc_id }}"
     region: "{{ ec2_region }}"
 
-- name: Remove VPC {{ instance_name }}
+- name: Remove VPC {{ vpc_name }}
   amazon.aws.ec2_vpc_net:
-    name: "{{ instance_name }}"
+    name: "{{ vpc_name }}"
     cidr_block: "172.31.0.0/16"
     state: absent
     region: "{{ ec2_region }}"

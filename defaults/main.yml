@@ -48,8 +48,6 @@ azure_image_sku: 8-lvm-gen2
 #                    #
 ######################
 
-# keypair which will be injected into the VM (must exist in AWS)
-ec2_key_pair: ""
 # which EC2 region to use
 ec2_region: "eu-central-1"
 
@@ -71,6 +69,9 @@ ec2_key_file: ""
 # Windows Server 2016 full: "Windows_Server-2016-English-Full-Base*"
 # Windows Server 2016 core: "Windows_Server-2016-English-Core-Base*"
 ec2_image_name: "RHEL-8.2_HVM*x86_64*"
+
+# VPC objects will inherit the instance name if not explicitly overridden
+ec2_vpc_name: "{{ instance_name }}"
 
 ########################
 #    __ _  ___ _ __    #

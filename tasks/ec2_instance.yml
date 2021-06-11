@@ -1,7 +1,7 @@
 ---
-- name: Create {{ instance_name }} VPC
+- name: Create {{ ec2_vpc_name }} VPC
   amazon.aws.ec2_vpc_net:
-    name: "{{ instance_name }}"
+    name: "{{ ec2_vpc_name }}"
     cidr_block: 172.31.0.0/16
     region: "{{ ec2_region }}"
   register: vpc
@@ -12,14 +12,14 @@
     cidr: 172.31.1.0/24
     region: "{{ ec2_region }}"
     tags:
-      Name: "{{ instance_name }}"
+      Name: "{{ ec2_vpc_name }}"
   register: subnet
 
-- name: Create internet gateway for VPC {{ instance_name }}
+- name: Create internet gateway for VPC {{ ec2_vpc_name }}
   community.aws.ec2_vpc_igw:
     vpc_id: "{{ vpc.vpc.id }}"
     tags:
-      Name: "{{ instance_name }}"
+      Name: "{{ ec2_vpc_name }}"
     state: present
     region: "{{ ec2_region }}"
   register: igw
@@ -29,14 +29,14 @@
     vpc_id: "{{ vpc.vpc.id }}"
     region: "{{ ec2_region }}"
     tags:
-      Name: "{{ instance_name }}"
+      Name: "{{ ec2_vpc_name }}"
     subnets:
       - "{{ subnet.subnet.id }}"
     routes:
       - dest: 0.0.0.0/0
         gateway_id: "{{ igw.gateway_id }}"
 
-- name: Create security group {{ instance_name }} (HTTP, HTTPS and SSH)
+- name: Create security group {{ ec2_vpc_name }} (HTTP, HTTPS and SSH)
   amazon.aws.ec2_group:
     name: "{{ instance_name }}"
     description: HTTP, HTTPS and SSH
@@ -77,7 +77,7 @@
 
 - name: Import SSH Key
   amazon.aws.ec2_key:
-    name: "{{ instance_name }}"
+    name: "{{ ec2_vpc_name }}"
     key_material: "{{ lookup('file', ec2_key_pair ) }}"
     region: "{{ ec2_region }}"
   when: ec2_key_pair is defined
@@ -96,13 +96,13 @@
     instance_type: "{{ instance_flavor }}"
     security_group: "{{ instance_name }}"
     name: "{{ instance_name }}"
-    key_name: "{{ instance_name }}"
+    key_name: "{{ ec2_vpc_name }}"
     region: "{{ ec2_region }}"
     vpc_subnet_id: "{{ subnet.subnet.id }}"
     network:
       assign_public_ip: true
     tags:
-      Name: "{{ instance_name }}"
+      Name: "{{ ec2_vpc_name }}"
   register: ec2
 
 - name: Obtain Administrator password for {{ instance_name }}

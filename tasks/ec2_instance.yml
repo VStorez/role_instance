@@ -36,7 +36,7 @@
       - dest: 0.0.0.0/0
         gateway_id: "{{ igw.gateway_id }}"
 
-- name: Create security group {{ ec2_vpc_name }} (HTTP, HTTPS and SSH)
+- name: Create security group {{ instance_name }} (HTTP, HTTPS and SSH)
   amazon.aws.ec2_group:
     name: "{{ instance_name }}"
     description: HTTP, HTTPS and SSH

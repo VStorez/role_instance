@@ -14,8 +14,8 @@
     suffix: "{{ dns_suffix }}"
     mode: remove
   when:
-  - lookup.rc == 0
-  - dns_update | bool
+    - lookup.rc == 0
+    - dns_update | bool
 
 - name: Gather subnet information
   amazon.aws.ec2_vpc_subnet_facts:
@@ -51,7 +51,9 @@
     state: absent
     cidr: "172.31.1.0/24"
     region: "{{ ec2_region }}"
-  when: subnet.subnets[0].subnet_id is defined
+  when:
+    - subnet.subnets[0].subnet_id is defined
+    - remove_vpc | bool
 
 - name: Gather Route Table information
   community.aws.ec2_vpc_route_table_facts:

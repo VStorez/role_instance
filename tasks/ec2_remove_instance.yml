@@ -14,8 +14,8 @@
     suffix: "{{ dns_suffix }}"
     mode: remove
   when:
-  - lookup.rc == 0
-  - dns_update | bool
+    - lookup.rc == 0
+    - dns_update | bool
 
 - name: Gather subnet information
   amazon.aws.ec2_vpc_subnet_facts:
@@ -37,6 +37,7 @@
     name: "{{ ec2_vpc_name }}"
     state: absent
     region: "{{ ec2_region }}"
+  when: remove_vpc | bool
 
 - name: Remove EC2 security group {{ instance_name }}
   amazon.aws.ec2_group:
@@ -50,7 +51,9 @@
     state: absent
     cidr: "172.31.1.0/24"
     region: "{{ ec2_region }}"
-  when: subnet.subnets[0].subnet_id is defined
+  when:
+    - subnet.subnets[0].subnet_id is defined
+    - remove_vpc | bool
 
 - name: Gather Route Table information
   community.aws.ec2_vpc_route_table_facts:
@@ -73,13 +76,16 @@
     state: absent
     region: "{{ ec2_region }}"
     lookup: id
-  when: route_table.route_tables[0].id is defined
+  when:
+    - route_table.route_tables[0].id is defined
+    - remove_vpc | bool
 
 - name: Remove internet gateway
   community.aws.ec2_vpc_igw:
     state: absent
     vpc_id: "{{ vpc.vpcs[0].vpc_id }}"
     region: "{{ ec2_region }}"
+  when: remove_vpc | bool
 
 - name: Remove VPC {{ ec2_vpc_name }}
   amazon.aws.ec2_vpc_net:
@@ -87,3 +93,4 @@
     cidr_block: "172.31.0.0/16"
     state: absent
     region: "{{ ec2_region }}"
+  when: remove_vpc | bool

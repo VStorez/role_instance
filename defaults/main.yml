@@ -73,6 +73,9 @@ ec2_image_name: "RHEL-8.2_HVM*x86_64*"
 # VPC objects will inherit the instance name if not explicitly overridden
 ec2_vpc_name: "{{ instance_name }}"
 
+# only remove VPC after the last instance was removed, hence the default is false
+remove_vpc: false
+
 ########################
 #    __ _  ___ _ __    #
 #   / _` |/ __| '_ \   #

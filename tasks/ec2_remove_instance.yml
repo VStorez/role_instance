@@ -37,6 +37,7 @@
     name: "{{ ec2_vpc_name }}"
     state: absent
     region: "{{ ec2_region }}"
+  when: remove_vpc | bool
 
 - name: Remove EC2 security group {{ instance_name }}
   amazon.aws.ec2_group:
@@ -73,13 +74,16 @@
     state: absent
     region: "{{ ec2_region }}"
     lookup: id
-  when: route_table.route_tables[0].id is defined
+  when:
+    - route_table.route_tables[0].id is defined
+    - remove_vpc | bool
 
 - name: Remove internet gateway
   community.aws.ec2_vpc_igw:
     state: absent
     vpc_id: "{{ vpc.vpcs[0].vpc_id }}"
     region: "{{ ec2_region }}"
+  when: remove_vpc | bool
 
 - name: Remove VPC {{ ec2_vpc_name }}
   amazon.aws.ec2_vpc_net:
@@ -87,3 +91,4 @@
     cidr_block: "172.31.0.0/16"
     state: absent
     region: "{{ ec2_region }}"
+  when: remove_vpc | bool

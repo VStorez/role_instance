@@ -50,7 +50,7 @@
 
 - name: create {{ instance_name }} instance
   gcp_compute_instance:
-    state: present
+    state: running
     name: "{{ instance_name }}"
     machine_type: "{{ instance_flavor }}"
     metadata:

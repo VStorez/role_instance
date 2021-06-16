@@ -103,7 +103,7 @@
       assign_public_ip: true
     tags:
       Name: "{{ ec2_vpc_name }}"
-      state: running
+    state: running
   register: ec2
 
 - name: Obtain Administrator password for {{ instance_name }}

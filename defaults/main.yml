@@ -56,11 +56,12 @@ ec2_region: "eu-central-1"
 # ami-0f58468b80db2db66 for RHEL 7 in eu-central-1
 ec2_ami_id: ""
 
+# EC2 public key
+ec2_key_pair: "{{ tower_ssh_public_key }}"
+
 # which OS to provision (linux or windows)
 ec2_os_type: "linux"
 
-# "path/to/keyfile.pem"
-ec2_key_file: ""
 # which AMI's to search from AWS
 # RHEL 7: "RHEL-7.9_HVM_GA*x86_64*"
 # RHEL 8: "RHEL-8.2_HVM*x86_64*"

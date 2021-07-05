@@ -75,12 +75,29 @@
       Name: "{{ instance_name }}"
   when: ec2_os_type == "windows"
 
-- name: Import SSH Key
+- name: check if ec2_key_pair is a file
+  stat:
+    path: ec2_key_pair
+  register: ec2_key_pair_stat
+  when: ec2_key_pair is defined
+
+- name: Import SSH Key from file
   amazon.aws.ec2_key:
     name: "{{ ec2_vpc_name }}"
     key_material: "{{ lookup('file', ec2_key_pair ) }}"
     region: "{{ ec2_region }}"
-  when: ec2_key_pair is defined
+  when:
+    - ec2_key_pair is defined
+    - ec2_key_pair_stat.stat.exists | bool
+
+- name: Import SSH Key from variable
+  amazon.aws.ec2_key:
+    name: "{{ ec2_vpc_name }}"
+    key_material: "{{ ec2_key_pair }}"
+    region: "{{ ec2_region }}"
+  when:
+    - ec2_key_pair is defined
+    - not ec2_key_pair_stat.stat.exists | bool
 
 - name: Find AMI with filter "{{ ec2_image_name }}"
   amazon.aws.ec2_ami_info:

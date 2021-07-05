@@ -6,23 +6,27 @@ This role will help to create and remove instances on several different provider
 
 Call the role from your playbook like this:
 
-	- name: deploy instance
-	  var:
-	    type: gcp
-	    instance_name: demo
-	    instance_flavor: n1-standard-1
-	  include_role:
-	    name: instance
+```yaml
+- name: deploy instance
+    var:
+    type: gcp
+    instance_name: demo
+    instance_flavor: n1-standard-1
+    include_role:
+    name: instance
+```
 
 To remove or delete a VM or instance, use the same role, but with the "remove" variables set to true.
 
-	- name: remove instance
-	  var:
-	    type: gcp
-	    instance_name: demo
-	    remove: true
-	  include_role:
-	    name: instance
+```yaml
+- name: remove instance
+    var:
+    type: gcp
+    instance_name: demo
+    remove: true
+    include_role:
+    name: instance
+```
 
 ## Variables
 

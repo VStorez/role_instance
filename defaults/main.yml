@@ -57,7 +57,7 @@ ec2_region: "eu-central-1"
 ec2_ami_id: ""
 
 # EC2 public key
-ec2_key_pair: "{{ tower_ansible_private_key }}"
+ec2_key_pair: "{{ tower_ansible_public_key }}"
 
 # which OS to provision (linux or windows)
 ec2_os_type: "linux"

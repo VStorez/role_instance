@@ -2,17 +2,36 @@
 
 This role will help to create and remove instances on several different providers. It can also be used to demonstrate multi cloud use cases.
 
+## How to install this role
+
+It's recommended to use the [Ansible SSA Collection](https://gitlab.com/redhat-cop/ansible-ssa/ansible-ssa-collection) instead of using this role directly. Add the following line to your `collections/requirements.yml`:
+
+```yaml
+---
+collections:
+  # replace version below
+  - https://gitlab.com/redhat-cop/ansible-ssa/ansible-ssa-collection/-/raw/master/ansible_ssa-common-<version>.tar.gz
+
+```
+
+If you really don't want to use the Collection, you can specify the role in your `roles/requirements.yml`:
+
+```yaml
+- src: https://gitlab.com/redhat-cop/ansible-ssa/role-instance.git
+  name: instance
+```
+
 ## How to use this role
 
 Call the role from your playbook like this:
 
 ```yaml
 - name: deploy instance
-    var:
+  var:
     type: gcp
     instance_name: demo
     instance_flavor: n1-standard-1
-    include_role:
+  include_role:
     name: instance
 ```
 
@@ -20,33 +39,14 @@ To remove or delete a VM or instance, use the same role, but with the "remove" v
 
 ```yaml
 - name: remove instance
-    var:
+  var:
     type: gcp
     instance_name: demo
     remove: true
-    include_role:
+  include_role:
     name: instance
 ```
 
 ## Variables
 
-| Variable Name | Description | Mandatory |
-|--|--|--|
-| type | Provider Type, gcp, ec2, rhv or vmw | yes |
-| instance_name | Name of the VM or Instance | yes |
-| instance_flavor | e.g. n1-standard-1 for a small VM on GCP | yes |
-
-### For EC2
-
-| Variable Name | Description | Mandatory | Additional information |
-|--|--|--|--|
-| ec2_keypair | Name of the keypair which will be injected into the VM | yes | Keypair must exist in AWS console |
-| instance_type | linux / windows | yes | |
-| ec2_region | Which AWS region to provision the resources to | yes |
-| ec2_key_file | Needed to obtain Windows Administrator password | no | "<Path/To/KeyFile.pem>" |
-| ec2_ami_id | Which AMI to use as a template | no | e.g. ami-04cf43aca3e6f3de3 |
-| ec2_image_name | Regexp for AMI's to search from AWS | no | e.g. "RHEL-7.9_HVM_GA*x86_64*" |
-
-## TODO
-
-Support more providers. Right now GCP is the only tested provider.
+Check the [defaults/main.yml](defaults/main.yml) for details on variables used by this role.

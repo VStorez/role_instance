@@ -65,6 +65,13 @@ ec2_region: "eu-central-1"
 # MANDATORY: ec2_ami_id or ec2_image_name
 ec2_ami_id: ""
 
+# specify the content of your SSH public key
+# supports /path/to/file and raw public key data
+# OPTIONAL
+# ec2_key_pair: "/path/to/file"
+# OR
+# ec2_key_pair: "RAW DATA"
+
 # which OS to provision (linux or windows)
 # MANDATORY
 ec2_os_type: "linux"

@@ -3,18 +3,23 @@
 #
 
 # the name of the instance or virtual machine to create
+# MANDATORY
 instance_name: example
 
 # the flavor of this instance
-# for GCP use n1-standard-2
-# for EC2 use t3.large
+# for GCP use n1-standard-2 for a RHAAP node
+# for EC2 use t3.large for a RHAAP node
+# for Azure use Standard_DS2 for a RHAAP node
+# MANDATORY
 instance_flavor: t3.large
 # GCP and other providers allow to set individual disk size for first disk
 # value is in GB
+# MANDATORY
 instance_disk_size: 20
 
 # in which platform to create the instance or vm
-# currently either gcp or ec2
+# currently either azure, ec2 or gcp
+# MANDATORY
 type: ec2
 
 ################################
@@ -25,6 +30,7 @@ type: ec2
 ################################
 
 # public key to inject into instance
+# MANDATORY
 azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
 # standard flavor is 2 CPU, 8 GB RAM
 # instance_flavor: Standard_DS2
@@ -34,6 +40,7 @@ azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
 # instance_flavor: Standard_B1s
 # get list of images with the following command: (might require you to do az login first)
 # z vm image list-skus --output table --offer RHEL --location westeurope --publisher RedHat
+# MANDATORY
 azure_image_offer: RHEL
 azure_image_publisher: RedHat
 azure_image_sku: 8-lvm-gen2
@@ -49,14 +56,17 @@ azure_image_sku: 8-lvm-gen2
 ######################
 
 # which EC2 region to use
+# MANDATORY
 ec2_region: "eu-central-1"
 
 # which AMI to use as a template
 # If not defined AMI will be search based on the filter below (ec2_image_names)
 # ami-0f58468b80db2db66 for RHEL 7 in eu-central-1
+# MANDATORY: ec2_ami_id or ec2_image_name
 ec2_ami_id: ""
 
 # which OS to provision (linux or windows)
+# MANDATORY
 ec2_os_type: "linux"
 
 # which AMI's to search from AWS
@@ -66,12 +76,15 @@ ec2_os_type: "linux"
 # Windows Server 2019 core: "Windows_Server-2019-English-Core-Base*"
 # Windows Server 2016 full: "Windows_Server-2016-English-Full-Base*"
 # Windows Server 2016 core: "Windows_Server-2016-English-Core-Base*"
+# MANDATORY: ec2_ami_id or ec2_image_name
 ec2_image_name: "RHEL-8.2_HVM*x86_64*"
 
 # VPC objects will inherit the instance name if not explicitly overridden
+# MANDATORY
 ec2_vpc_name: "{{ instance_name }}"
 
 # only remove VPC after the last instance was removed, hence the default is false
+# MANDATORY
 remove_vpc: false
 
 ########################
@@ -89,11 +102,15 @@ remove_vpc: false
 # CentOS 7: projects/centos-cloud/global/images/family/centos-7
 # RHEL 8: projects/rhel-cloud/global/images/family/rhel-8
 # CentOS 8: projects/centos-cloud/global/images/family/centos-8
+# MANDATORY
 gcp_template: projects/rhel-cloud/global/images/family/rhel-8
 # which GCP Region and Zone to use for the new VM
+# MANDATORY
 gcp_region: europe-west2
+# MANDATORY
 gcp_zone: europe-west2-a
 # create resources in a specific project
+# MANDATORY
 gcp_project: tower
 
 #######################
@@ -107,15 +124,20 @@ gcp_project: tower
 #######################
 
 # which RHV storage domain is used for the disk
+# MANDATORY
 rhv_storage_domain: Default
 # RHV Cluster:
+# MANDATORY
 rhv_cluster: Default
 # Memory in GB
+# MANDATORY
 rhv_memory: 4GiB
 # Number of CPU Cores
+# MANDATORY
 rhv_cores: 2
 
 # remove == true to delete an instance
+# MANDATORY
 remove: false
 
 #######################
@@ -129,6 +151,8 @@ remove: false
 #######################
 
 # update DNS records
+# MANDATORY
 dns_update: false
+# MANDATORY if dns_update is true
 dns_suffix: example
 dns_keyfile: /path/to/keyfile

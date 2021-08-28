@@ -78,13 +78,13 @@ ec2_os_type: "linux"
 
 # which AMI's to search from AWS
 # RHEL 7: "RHEL-7.9_HVM_GA*x86_64*"
-# RHEL 8: "RHEL-8.4_HVM*x86_64*"
+# RHEL 8: "RHEL-8.3_HVM*x86_64*"
 # Windows Server 2019 full: "Windows_Server-2019-English-Full-Base*"
 # Windows Server 2019 core: "Windows_Server-2019-English-Core-Base*"
 # Windows Server 2016 full: "Windows_Server-2016-English-Full-Base*"
 # Windows Server 2016 core: "Windows_Server-2016-English-Core-Base*"
 # MANDATORY: ec2_ami_id or ec2_image_name
-ec2_image_name: "RHEL-8.4_HVM*x86_64*"
+ec2_image_name: "RHEL-8.3_HVM*x86_64*"
 
 # VPC objects will inherit the instance name if not explicitly overridden
 # MANDATORY, default is {{ instance_name }}

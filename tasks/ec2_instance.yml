@@ -47,6 +47,7 @@
         - 80
         - 443
         - 22
+        - "{{ instance_additional_ports | default(omit) }}"
       cidr_ip: 0.0.0.0/0
       rule_desc: allow all on ports 80, 443 & 22
     region: "{{ ec2_region }}"
@@ -67,6 +68,7 @@
         - 443
         - 3389
         - 5986
+        - "{{ instance_additional_ports | default(omit) }}"
       cidr_ip: 0.0.0.0/0
       rule_desc: allow all on ports 80, 443 & 5986
     region: "{{ ec2_region }}"

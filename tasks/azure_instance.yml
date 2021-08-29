@@ -28,9 +28,10 @@
     admin_username: ansible
     virtual_network_name: "{{ instance_name }}"
     open_ports:
-    - 22
-    - 80
-    - 443
+      - 22
+      - 80
+      - 443
+      - "{{ instance_additional_ports | default(omit) }}"
     ssh_password_enabled: false
     ssh_public_keys:
     - path: /home/ansible/.ssh/authorized_keys

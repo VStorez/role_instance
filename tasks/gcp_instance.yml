@@ -29,7 +29,6 @@
       - "443"
       - "3389"
       - "5986"
-      - "{{ instance_additional_ports | default(omit) }}"
   when: gcp_template is search ("indows")
 
 - name: open network ports for Linux
@@ -38,7 +37,6 @@
       - "22"
       - "80"
       - "443"
-      - "{{ instance_additional_ports | default(omit) }}"
   when: not gcp_template is search ("indows")
 
 - name: allow instance incoming traffic

@@ -36,6 +36,31 @@
       - dest: 0.0.0.0/0
         gateway_id: "{{ igw.gateway_id }}"
 
+- name: set port lists for linux
+  set_fact:
+    port_list:
+      - 80
+      - 443
+      - 22
+  when: ec2_os_type == "linux"
+
+- name: set port lists for Windows
+  set_fact:
+    port_list:
+      - 80
+      - 443
+      - 3389
+      - 5986
+  when: ec2_os_type == "windows"
+
+- name: expand port list with additional port
+  set_fact:
+    port_list: "{{ port_list + [ instance_additional_port ] }}"
+  when: instance_additional_port is defined
+
+- debug:
+    var: port_list
+
 - name: Create security group {{ instance_name }} (HTTP, HTTPS and SSH)
   amazon.aws.ec2_group:
     name: "{{ instance_name }}"
@@ -43,11 +68,7 @@
     state: present
     rules:
     - proto: tcp
-      ports:
-        - 80
-        - 443
-        - 22
-        - "{{ instance_additional_ports | default(omit) }}"
+      ports: "{{ port_list }}"
       cidr_ip: 0.0.0.0/0
       rule_desc: allow all on ports 80, 443 & 22
     region: "{{ ec2_region }}"
@@ -63,12 +84,7 @@
     state: present
     rules:
     - proto: tcp
-      ports:
-        - 80
-        - 443
-        - 3389
-        - 5986
-        - "{{ instance_additional_ports | default(omit) }}"
+      ports: "{{ port_list }}"
       cidr_ip: 0.0.0.0/0
       rule_desc: allow all on ports 80, 443 & 5986
     region: "{{ ec2_region }}"

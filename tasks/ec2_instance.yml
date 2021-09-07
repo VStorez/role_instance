@@ -58,9 +58,6 @@
     port_list: "{{ port_list + [ instance_additional_port ] }}"
   when: instance_additional_port is defined
 
-- debug:
-    var: port_list
-
 - name: Create security group {{ instance_name }} (HTTP, HTTPS and SSH)
   amazon.aws.ec2_group:
     name: "{{ instance_name }}"

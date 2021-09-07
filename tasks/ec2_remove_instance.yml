@@ -18,7 +18,7 @@
     - dns_update | bool
 
 - name: Gather subnet information
-  amazon.aws.ec2_vpc_subnet_facts:
+  amazon.aws.ec2_vpc_subnet_info:
     filters:
       "tag:Name": "{{ ec2_vpc_name }}"
     region: "{{ ec2_region }}"
@@ -56,14 +56,14 @@
     - remove_vpc | bool
 
 - name: Gather Route Table information
-  community.aws.ec2_vpc_route_table_facts:
+  community.aws.ec2_vpc_route_table_info:
     filters:
       "tag:Name": "{{ ec2_vpc_name }}"
     region: "{{ ec2_region }}"
   register: route_table
 
 - name: Gather VPC information
-  amazon.aws.ec2_vpc_net_facts:
+  amazon.aws.ec2_vpc_net_info:
     filters:
       "tag:Name": "{{ ec2_vpc_name }}"
     region: "{{ ec2_region }}"
@@ -80,12 +80,21 @@
     - route_table.route_tables[0].id is defined
     - remove_vpc | bool
 
+- name: Gather internet gateway information
+  community.aws.ec2_vpc_igw_info:
+    filters:
+      "tag:Name": "{{ ec2_vpc_name }}"
+    region: "{{ ec2_region }}"
+  register: igw
+
 - name: Remove internet gateway
   community.aws.ec2_vpc_igw:
     state: absent
     vpc_id: "{{ vpc.vpcs[0].vpc_id }}"
     region: "{{ ec2_region }}"
-  when: remove_vpc | bool
+  when:
+    - igw.internet_gateways[0].internet_gateway_id is defined
+    - remove_vpc | bool
 
 - name: Remove VPC {{ ec2_vpc_name }}
   amazon.aws.ec2_vpc_net:

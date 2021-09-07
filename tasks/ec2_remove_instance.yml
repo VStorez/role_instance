@@ -80,12 +80,21 @@
     - route_table.route_tables[0].id is defined
     - remove_vpc | bool
 
+- name: Gather internet gateway information
+  community.aws.ec2_vpc_igw_info:
+    filters:
+      "tag:Name": "{{ ec2_vpc_name }}"
+    region: "{{ ec2_region }}"
+  register: igw
+
 - name: Remove internet gateway
   community.aws.ec2_vpc_igw:
     state: absent
     vpc_id: "{{ vpc.vpcs[0].vpc_id }}"
     region: "{{ ec2_region }}"
-  when: remove_vpc | bool
+  when:
+    - igw[0].id is defined
+    - remove_vpc | bool
 
 - name: Remove VPC {{ ec2_vpc_name }}
   amazon.aws.ec2_vpc_net:

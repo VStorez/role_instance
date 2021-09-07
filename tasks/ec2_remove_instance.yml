@@ -93,7 +93,7 @@
     vpc_id: "{{ vpc.vpcs[0].vpc_id }}"
     region: "{{ ec2_region }}"
   when:
-    - igw[0].id is defined
+    - igw.internet_gateways[0].internet_gateway_id is defined
     - remove_vpc | bool
 
 - name: Remove VPC {{ ec2_vpc_name }}

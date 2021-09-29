@@ -1,6 +1,6 @@
 ---
 - name: check if there is a DNS record
-  shell: host {{ instance_name }}.{{ dns_suffix }}.ansible-labs.de
+  ansible.builtin.shell: host {{ instance_name }}.{{ dns_suffix }}.ansible-labs.de
   changed_when: false
   register: lookup
   ignore_errors: true

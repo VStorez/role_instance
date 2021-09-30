@@ -45,6 +45,8 @@ azure_image_offer: RHEL
 azure_image_publisher: RedHat
 azure_image_sku: 8-lvm-gen2
 
+azure_os_type: linux
+
 ######################
 #             ___    #
 #            |__ \   #

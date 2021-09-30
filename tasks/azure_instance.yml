@@ -25,7 +25,7 @@
       - 80
       - 443
       - 22
-  when: ec2_os_type == "linux"
+  when: azure_os_type == "linux"
 
 - name: set port lists for Windows
   ansible.builtin.set_fact:
@@ -34,14 +34,14 @@
       - 443
       - 3389
       - 5986
-  when: ec2_os_type == "windows"
+  when: azure_os_type == "windows"
 
 - name: expand port list with additional port
   ansible.builtin.set_fact:
     port_list: "{{ port_list + [ instance_additional_port ] }}"
   when: instance_additional_port is defined
 
-- name: create virtual machine {{ instance_name }} - this can take a minute
+- name: create Linux Virtual Machine {{ instance_name }} - this can take a minute
   azure.azcollection.azure_rm_virtualmachine:
     resource_group: "{{ instance_name }}"
     name: "{{ instance_name }}"
@@ -61,6 +61,26 @@
       version: latest
     state: present
   register: vm
+  when: azure_os_type == "linux"
+
+- name: create Windows Virtual Machine {{ instance_name }} - this can take a minute
+  azure.azcollection.azure_rm_virtualmachine:
+    resource_group: "{{ instance_name }}"
+    name: "{{ instance_name }}"
+    vm_size: "{{ instance_flavor }}"
+    managed_disk_type: Premium_LRS
+    admin_username: ansible
+    admin_password: "{{} windows_admin_password }"
+    virtual_network_name: "{{ instance_name }}"
+    open_ports: "{{ port_list }}"
+    image:
+      offer: "{{ azure_image_offer }}"
+      publisher: "{{ azure_image_publisher }}"
+      sku: "{{ azure_image_sku }}"
+      version: latest
+    state: present
+  register: vm
+  when: azure_os_type == "linux"
 
 - name: update DNS record
   include_role:

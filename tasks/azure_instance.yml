@@ -70,7 +70,8 @@
     vm_size: "{{ instance_flavor }}"
     managed_disk_type: Premium_LRS
     admin_username: ansible
-    admin_password: "{{} windows_admin_password }"
+    admin_password: "{{ windows_admin_password }}"
+    os_type: Windows
     virtual_network_name: "{{ instance_name }}"
     open_ports: "{{ port_list }}"
     image:
@@ -80,7 +81,7 @@
       version: latest
     state: present
   register: vm
-  when: azure_os_type == "linux"
+  when: azure_os_type == "windows"
 
 - name: update DNS record
   include_role:

@@ -19,6 +19,28 @@
     name: "{{ instance_name }}"
     address_prefix_cidr: "10.1.0.0/24"
 
+- name: set port lists for linux
+  ansible.builtin.set_fact:
+    port_list:
+      - 80
+      - 443
+      - 22
+  when: ec2_os_type == "linux"
+
+- name: set port lists for Windows
+  ansible.builtin.set_fact:
+    port_list:
+      - 80
+      - 443
+      - 3389
+      - 5986
+  when: ec2_os_type == "windows"
+
+- name: expand port list with additional port
+  ansible.builtin.set_fact:
+    port_list: "{{ port_list + [ instance_additional_port ] }}"
+  when: instance_additional_port is defined
+
 - name: create virtual machine {{ instance_name }} - this can take a minute
   azure.azcollection.azure_rm_virtualmachine:
     resource_group: "{{ instance_name }}"
@@ -27,10 +49,7 @@
     managed_disk_type: Premium_LRS
     admin_username: ansible
     virtual_network_name: "{{ instance_name }}"
-    open_ports:
-      - 22
-      - 80
-      - 443
+    open_ports: "{{ port_list }}"
     ssh_password_enabled: false
     ssh_public_keys:
       - path: /home/ansible/.ssh/authorized_keys

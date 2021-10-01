@@ -60,7 +60,7 @@
       sku: "{{ azure_image_sku }}"
       version: latest
     state: present
-  register: vm
+  register: linux_vm
   when: azure_os_type == "linux"
 
 - name: create Windows Virtual Machine {{ instance_name }} - this can take a minute
@@ -80,14 +80,24 @@
       sku: "{{ azure_image_sku }}"
       version: latest
     state: present
-  register: vm
+  register: windows_vm
+  when: azure_os_type == "windows"
+
+- name: store Linux VM facts
+  ansible.builtin.set_fact:
+    vm: "{{ linux_vm }}"
+  when: azure_os_type == "linux"
+
+- name: store Windows VM facts
+  ansible.builtin.set_fact:
+    vm: "{{ windows_vm }}"
   when: azure_os_type == "windows"
 
 - name: update DNS record
   include_role:
     name: nsupdate
   vars:
-    ipaddress: "{{ vm.ansible_facts.azure_vm.properties. networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    ipaddress: "{{ vm.ansible_facts.azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
     shortname: "{{ instance_name }}"
     keyfile: "{{ dns_keyfile }}"
     suffix: "{{ dns_suffix }}"

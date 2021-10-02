@@ -80,8 +80,6 @@
       sku: "{{ azure_image_sku }}"
       version: latest
     state: present
-    winrm:
-      - protocol: https
   register: windows_vm
   when: azure_os_type == "windows"
 

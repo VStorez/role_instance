@@ -23,30 +23,6 @@ instance_disk_size: 20
 type: ec2
 
 #
-# Microsoft Azure
-#
-
-# set typo to "azure" to use these settings
-
-# public key to inject into instance
-# MANDATORY
-azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
-# standard flavor is 2 CPU, 8 GB RAM
-# instance_flavor: Standard_DS2
-# for 4 CPU , 16 GB RAM
-# instance_flavor: Standard_DS4
-# for 1 CPU, 1 GB RAM
-# instance_flavor: Standard_B1s
-# get list of images with the following command: (might require you to do az login first)
-# z vm image list-skus --output table --offer RHEL --location westeurope --publisher RedHat
-# MANDATORY
-azure_image_offer: RHEL
-azure_image_publisher: RedHat
-azure_image_sku: 8-lvm-gen2
-
-azure_os_type: linux
-
-#
 # Amazon AWS
 #
 
@@ -90,6 +66,33 @@ ec2_vpc_name: "{{ instance_name }}"
 # only remove VPC after the last instance was removed, hence the default is false
 # MANDATORY
 remove_vpc: false
+
+
+#
+# Azure
+#
+
+# set typo to "azure" to use these settings
+
+# public key to inject into the linux instance for SSH
+# MANDATORY
+azure_ssh_public_key: "{{ vault_azure_ssh_public_key }}"
+# standard flavor is 2 CPU, 8 GB RAM
+# instance_flavor: Standard_DS2
+# for 4 CPU , 16 GB RAM
+# instance_flavor: Standard_DS4
+# for 1 CPU, 1 GB RAM
+# instance_flavor: Standard_B1s
+# get list of images with the following command: (might require you to do az login first)
+# z vm image list-skus --output table --offer RHEL --location westeurope --publisher RedHat
+# MANDATORY
+azure_image_offer: RHEL
+azure_image_publisher: RedHat
+azure_image_sku: 8-lvm-gen2
+
+# set guest OS type, either "linux" or "windows"
+# MANDATORY
+azure_os_type: linux
 
 #
 # Google Cloud

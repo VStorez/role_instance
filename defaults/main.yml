@@ -18,16 +18,15 @@ instance_flavor: t3.large
 instance_disk_size: 20
 
 # in which platform to create the instance or vm
-# currently either azure, ec2 or gcp
+# currently either azure, ec2, gcp or rhv
 # MANDATORY
 type: ec2
 
-################################
-#    __ _ _____   _ _ __ ___   #
-#   / _` |_  / | | | '__/ _ \  #
-#  | (_| |/ /| |_| | | |  __/  #
-#   \__,_/___|\__,_|_|  \___|  #
-################################
+#
+# Microsoft Azure
+#
+
+# set typo to "azure" to use these settings
 
 # public key to inject into instance
 # MANDATORY
@@ -47,25 +46,15 @@ azure_image_sku: 8-lvm-gen2
 
 azure_os_type: linux
 
-######################
-#             ___    #
-#            |__ \   #
-#    ___  ___   ) |  #
-#   / _ \/ __| / /   #
-#  |  __/ (__ / /_   #
-#   \___|\___|____|  #
-#                    #
-######################
+#
+# Amazon AWS
+#
+
+# set type to "ec2" to use these settings
 
 # which EC2 region to use
 # MANDATORY
 ec2_region: "eu-central-1"
-
-# which AMI to use as a template
-# If not defined AMI will be search based on the filter below (ec2_image_names)
-# ami-0f58468b80db2db66 for RHEL 7 in eu-central-1
-# MANDATORY: ec2_ami_id or ec2_image_name
-ec2_ami_id: ""
 
 # specify the content of your SSH public key
 # supports /path/to/file and raw public key data
@@ -77,6 +66,12 @@ ec2_ami_id: ""
 # which OS to provision (linux or windows)
 # MANDATORY
 ec2_os_type: "linux"
+
+# which AMI to use as a template
+# If not defined AMI will be search based on the filter below (ec2_image_names)
+# ami-0f58468b80db2db66 for RHEL 7 in eu-central-1
+# MANDATORY: ec2_ami_id or ec2_image_name (see below)
+ec2_ami_id: ""
 
 # which AMI's to search from AWS
 # RHEL 7: "RHEL-7.9_HVM_GA*x86_64*"
@@ -96,15 +91,11 @@ ec2_vpc_name: "{{ instance_name }}"
 # MANDATORY
 remove_vpc: false
 
-########################
-#    __ _  ___ _ __    #
-#   / _` |/ __| '_ \   #
-#  | (_| | (__| |_) |  #
-#   \__, |\___| .__/   #
-#    __/ |    | |      #
-#   |___/     |_|      #
-#                      #
-########################
+#
+# Google Cloud
+#
+
+# set type to "gcp" to use these settings
 
 # which template to use
 # RHEL 7: projects/rhel-cloud/global/images/family/rhel-7
@@ -113,34 +104,37 @@ remove_vpc: false
 # CentOS 8: projects/centos-cloud/global/images/family/centos-8
 # MANDATORY
 gcp_template: projects/rhel-cloud/global/images/family/rhel-8
+
 # which GCP Region and Zone to use for the new VM
 # MANDATORY
 gcp_region: europe-west2
+
+# GCP Zone wihtin that region
 # MANDATORY
 gcp_zone: europe-west2-a
+
 # create resources in a specific project
 # MANDATORY
 gcp_project: tower
 
-#######################
-#        _            #
-#       | |           #
-#   _ __| |____   __  #
-#  | '__| '_ \ \ / /  #
-#  | |  | | | \ V /   #
-#  |_|  |_| |_|\_/    #
-#                     #
-#######################
+#
+# Red Hat Virtualization
+#
+
+# set type to "rhv" to use these settings
 
 # which RHV storage domain is used for the disk
 # MANDATORY
 rhv_storage_domain: Default
+
 # RHV Cluster:
 # MANDATORY
 rhv_cluster: Default
+
 # Memory in GB
 # MANDATORY
 rhv_memory: 4GiB
+
 # Number of CPU Cores
 # MANDATORY
 rhv_cores: 2
@@ -149,19 +143,24 @@ rhv_cores: 2
 # MANDATORY
 remove: false
 
-#######################
-#      _              #
-#      | |            #
-#    __| |_ __  ___   #
-#   / _` | '_ \/ __|  #
-#  | (_| | | | \__ \  #
-#   \__,_|_| |_|___/  #
-#                     #
-#######################
+#
+# DNS
+#
 
 # update DNS records
 # MANDATORY
 dns_update: false
+
+# the DNS sub domain <dns_suffix>.ansible-labs.de
 # MANDATORY if dns_update is true
 dns_suffix: example
-dns_keyfile: /path/to/keyfile
+
+# the key used to interact with the DNS server
+# NOTE: This is the content of the file, not the path to the file
+# MANDATORY if dns_update is true
+dns_key: "{{ vault_dns_key }}"
+
+# the private key to interacti with the DNS server
+# NOTE: This is the content of the file, not the path to the file
+# MANDATORY if dns_update is true
+dns_private: "{{ vault_dns_key_private }}"

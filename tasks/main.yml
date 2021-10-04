@@ -2,32 +2,31 @@
 - name: check type variable
   assert:
     that:
-    - type is defined
-    - type == "gcp" or type == "azure" or type == "ec2" or type == "rhv" or type == "mock"
+      - type is defined
+      - type == "gcp" or type == "azure" or type == "ec2" or type == "rhv" or type == "mock"
     fail_msg: "type has to be azure, ec2, gcp or rhv"
     success_msg: "type is defined"
 
 - name: check instance parameters
   assert:
     that:
-    - instance_name is defined
+      - instance_name is defined
     fail_msg: "instance_name is not defined"
     success_msg: "instance_name is defined"
 
 - name: check instance_flavor is defined
   assert:
     that:
-    - instance_flavor is defined
+      - instance_flavor is defined
     fail_msg: "instance_flavor is not defined"
     success_msg: "instance_flavor is defined"
 
 - name: create instance on {{ type }}
   include_tasks: "{{ type }}_instance.yml"
-  when: 
+  when:
     - not remove | bool
 
-- name: remove instance from {{ type }} 
+- name: remove instance from {{ type }}
   include_tasks: "{{ type }}_remove_instance.yml"
   when:
-   - remove | bool
-
+    - remove | bool

@@ -45,7 +45,7 @@
   when: ec2_os_type == "linux"
 
 - name: set port lists for Windows
-  ansible.builting.set_fact:
+  ansible.builtin.set_fact:
     port_list:
       - 80
       - 443

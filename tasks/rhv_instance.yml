@@ -21,16 +21,16 @@
     cpu_cores: "{{ rhv_cores }}"
     type: server
     boot_devices:
-    - hd
-    - network
+      - hd
+      - network
     operating_system: rhel_7x64
     nics:
-    - name: nic1
-      profile_name: ovirtmgmt
-      mac_address: "{{ instance_mac_address }}"
+      - name: nic1
+        profile_name: ovirtmgmt
+        mac_address: "{{ instance_mac_address }}"
     disks:
-    - name: "{{ instance_name }}_disk"
-      bootable: true
+      - name: "{{ instance_name }}_disk"
+        bootable: true
     state: running
   when: instance_mac_address is defined
 
@@ -43,14 +43,14 @@
     cpu_cores: "{{ rhv_cores }}"
     type: server
     boot_devices:
-    - hd
-    - network
+      - hd
+      - network
     operating_system: rhel_7x64
     nics:
-    - name: nic1
-      profile_name: ovirtmgmt
+      - name: nic1
+        profile_name: ovirtmgmt
     disks:
-    - name: "{{ instance_name }}_disk"
-      bootable: true
+      - name: "{{ instance_name }}_disk"
+        bootable: true
     state: running
   when: instance_mac_address is not defined

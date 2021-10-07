@@ -136,7 +136,7 @@
     tags:
       Name: "{{ ec2_vpc_name }}"
     state: running
-  register: ec2
+  register: linux_vm
   when: ec2_os_type == "linux"
 
 - name: Create EC2 Windows instance {{ instance_name }} - this can take a minute
@@ -166,8 +166,18 @@
       Add-LocalGroupMember -Group "Administrators" -Member "ansible"
       </powershell>
       <persist>true</persist>
-  register: ec2
+  register: windows_vm
   when: ec2_os_type == "windows"
+
+- name: store Linux VM facts
+  ansible.builtin.set_fact:
+    ec2: "{{ linux_vm }}"
+  when: azure_os_type == "linux"
+
+- name: store Windows VM facts
+  ansible.builtin.set_fact:
+    ec2: "{{ windows_vm }}"
+  when: azure_os_type == "windows"
 
 - name: Add host to an in_memory inventory
   ansible.builtin.add_host:

@@ -16,7 +16,7 @@ trigger_master:
     project: redhat-cop/ansible-ssa/ansible-ssa-collection
     branch: master
   only:
-    - main
+    - master
 
 trigger_release:
   stage: build

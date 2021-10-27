@@ -1,0 +1,27 @@
+---
+image: registry.gitlab.com/cjung/podman-examples/ansible-cloud
+
+stages:
+  - check
+  - build
+
+lint-common:
+  stage: check
+  script:
+    - ansible-lint -r .
+
+trigger_master:
+  stage: build
+  trigger:
+    project: redhat-cop/ansible-ssa/ansible-ssa-collection
+    branch: master
+  only:
+    - main
+
+trigger_release:
+  stage: build
+  trigger:
+    project: redhat-cop/ansible-ssa/ansible-ssa-collection
+    branch: release
+  only:
+    - release

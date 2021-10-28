@@ -7,6 +7,7 @@
         "networkinterface",
         "nsupdate",
         "proto",
+        "Remoting",
         "resourcegroup",
         "resourcegroups",
         "skus",

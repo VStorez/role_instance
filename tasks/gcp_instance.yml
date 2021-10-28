@@ -1,6 +1,6 @@
 ---
 - name: create {{ instance_name }} disk
-  gcp_compute_disk:
+  google.gcp_compute_disk:
       name: "{{ instance_name }}-disk"
       size_gb: "{{ instance_disk_size }}"
       source_image: "{{ gcp_template }}"
@@ -9,14 +9,14 @@
   register: disk
 
 - name: create {{ instance_name }} network
-  gcp_compute_network:
+  google.gcp_compute_network:
       name: "{{ instance_name }}-network"
       state: present
       auto_create_subnetworks: true
   register: network
 
 - name: create {{ instance_name }} address
-  gcp_compute_address:
+  google.gcp_compute_address:
       name: "{{ instance_name }}-address"
       state: present
       region: "{{ gcp_region }}"
@@ -40,7 +40,7 @@
   when: not gcp_template is search ("indows")
 
 - name: allow instance incoming traffic
-  gcp_compute_firewall:
+  google.gcp_compute_firewall:
     name: "{{ instance_name }}-firewall"
     state: present
     allowed:
@@ -49,7 +49,7 @@
     network: "{{ network }}"
 
 - name: create {{ instance_name }} instance
-  gcp_compute_instance:
+  google.gcp_compute_instance:
     state: present
     name: "{{ instance_name }}"
     machine_type: "{{ instance_flavor }}"

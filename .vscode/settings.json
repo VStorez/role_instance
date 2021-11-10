@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "AMI's",
+        "azcollection",
         "ipaddress",
         "keyfile",
         "keypair",
@@ -13,7 +14,9 @@
         "skus",
         "subnetworks",
         "virtualmachine",
+        "virtualmachineextension",
         "virtualnetwork",
-        "westeurope"
+        "westeurope",
+        "winrm"
     ]
 }

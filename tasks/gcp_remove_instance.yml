@@ -18,29 +18,29 @@
   - dns_update | bool
 
 - name: remove {{ instance_name }} instance
-  google.gcp_compute_instance:
+  google.cloud.gcp_compute_instance:
       state: absent
       name: "{{ instance_name }}"
       zone: "{{ gcp_zone }}"
 
 - name: remove {{ instance_name }} disk
-  google.gcp_compute_disk:
+  google.cloud.gcp_compute_disk:
       name: "{{ instance_name }}-disk"
       state: absent
       zone: "{{ gcp_zone }}"
 
 - name: remove {{ instance_name }} firewall for SSH, HTTP and HTTPS traffic
-  google.gcp_compute_firewall:
+  google.cloud.gcp_compute_firewall:
       name: "{{ instance_name }}-firewall"
       state: absent
 
 - name: remove {{ instance_name }} IP address
-  google.gcp_compute_address:
+  google.cloud.gcp_compute_address:
       name: "{{ instance_name }}-address"
       state: absent
       region: "{{ gcp_region }}"
 
 - name: remove {{ instance_name }} network
-  google.gcp_compute_network:
+  google.cloud.gcp_compute_network:
       name: "{{ instance_name }}-network"
       state: absent

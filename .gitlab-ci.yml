@@ -10,13 +10,13 @@ lint-common:
   script:
     - ansible-lint -r .
 
-trigger_master:
+trigger_main:
   stage: build
   trigger:
     project: redhat-cop/ansible-ssa/ansible-ssa-collection
-    branch: master
+    branch: main
   only:
-    - master
+    - main
 
 trigger_release:
   stage: build

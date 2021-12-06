@@ -1,10 +1,4 @@
 ---
-- name: check if there is a DNS record
-  shell: host {{ instance_name }}.{{ dns_suffix }}.ansible-labs.de
-  changed_when: false
-  register: lookup
-  ignore_errors: true
-
 - name: remove DNS record
   include_role:
     name: nsupdate
@@ -14,7 +8,6 @@
     suffix: "{{ dns_suffix }}"
     mode: remove
   when:
-  - lookup.rc == 0
   - dns_update | bool
 
 - name: remove {{ instance_name }} instance

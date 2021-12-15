@@ -39,6 +39,11 @@
       - "443"
   when: not gcp_template is search ("indows")
 
+- name: expand port list with additional port
+  ansible.builtin.set_fact:
+    port_list: "{{ port_list + [ instance_additional_port ] }}"
+  when: instance_additional_port is defined
+
 - name: allow instance incoming traffic
   google.cloud.gcp_compute_firewall:
     name: "{{ instance_name }}-firewall"
@@ -72,6 +77,7 @@
   ansible.builtin.add_host:
     name: "{{ instance_name }}"
     ansible_host: "{{ instance_name }}.{{ dns_suffix }}.ansible-labs.de"
+    ansible_user: ansible
     groups:
     - "{{ instance_group | default ('all_hosts') }}"
 
@@ -93,5 +99,4 @@
     delay: 10
     timeout: 60
   when:
-  - instance.changed
-  - not gcp_template is search ("indows")
+    - not gcp_template is search ("indows")

@@ -1,7 +1,7 @@
 ---
 - name: unregister {{ instance_name }} from RHN if reachable
   ansible.builtin.command:
-    cmd: 'ssh ec2-user@{{ instance_name }}.{{ dns_suffix }}.ansible-labs.de "sudo subscription-manager unregister"'
+    cmd: 'ssh -o "StrictHostKeyChecking=off" ansible@{{ instance_name }}.{{ dns_suffix }}.ansible-labs.de "sudo subscription-manager unregister"'
   when:
     - instance_name is defined
     - dns_suffix is defined

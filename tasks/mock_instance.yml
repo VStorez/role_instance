@@ -1,4 +1,4 @@
 ---
-- name: Mock instance
+- name: mock instance
   ansible.builtin.debug:
     msg: "Create a mock instance was called"

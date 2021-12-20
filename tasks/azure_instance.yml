@@ -83,7 +83,7 @@
   register: windows_vm
   when: azure_os_type == "windows"
 
-- name: Create VM script extension to enable HTTPS WinRM listener
+- name: create VM script extension to enable HTTPS WinRM listener
   azure.azcollection.azure_rm_virtualmachineextension:
     name: winrm-extension
     resource_group: "{{ instance_name }}"
@@ -116,7 +116,7 @@
     mode: update
   when: dns_update | bool
 
-- name: Add host to an in_memory inventory
+- name: add host to an in_memory inventory
   ansible.builtin.add_host:
     name: "{{ instance_name }}"
     ansible_host: "{{ instance_name }}.{{ dns_suffix }}.ansible-labs.de"

@@ -50,9 +50,6 @@
   when:
     - vpc.vpcs != []
 
-- debug:
-    var: vpc_instance_list
-
 - name: initialize variable vpc_emtpy
   set_fact:
     vpc_empty: false
@@ -61,9 +58,6 @@
   set_fact:
     vpc_empty: true
   when: vpc.vpcs == [] or vpc_instance_list.instances == [] | default('[]')
-
-- debug:
-    var: vpc_empty
 
 - name: remove SSH Key pair
   amazon.aws.ec2_key:
